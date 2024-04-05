@@ -1,0 +1,10 @@
+[
+  {
+    "featureType": "landscape",
+    "elementType": "labels",
+    "stylers": [
+      { "visibility": "off" },
+      { "color": "#CC0C0C" }
+    ]
+  }
+]
