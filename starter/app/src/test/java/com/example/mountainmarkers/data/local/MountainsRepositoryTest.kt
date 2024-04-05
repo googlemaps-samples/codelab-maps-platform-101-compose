@@ -15,9 +15,9 @@
 package com.example.mountainmarkers.data.local
 
 import androidx.test.core.app.ApplicationProvider
-import com.example.mountainmarkers.data.utils.m
-import com.example.mountainsmap.subjects.assertThat
 import com.google.common.truth.Truth.assertThat
+import com.example.mountainmarkers.data.utils.m
+import com.example.mountainmarkers.subjects.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,15 +28,22 @@ class MountainsRepositoryTest {
     @Test
     fun canLoadMountainData() = runBlocking {
         val repo = MountainsRepository(ApplicationProvider.getApplicationContext())
-        val mountains = repo.loadMountains()
+        val mountains = repo.loadMountains().value
 
         assertThat(mountains).hasSize(143)
 
-        val sneffels = mountains.first { it.name == "Mount Sneffels" }
+        with(mountains.first { it.name == "Mount Sneffels" }) {
+            assertThat(name).isEqualTo("Mount Sneffels")
+            assertThat(elevation.value).isWithin(1.0e-6).of(4315.4)
+            assertThat(location).isWithin(3.m).of(38.0038, -107.7923)
+            assertThat(is14er()).isTrue()
+        }
 
-        assertThat(sneffels.name).isEqualTo("Mount Sneffels")
-        assertThat(sneffels.elevation.value).isWithin(1.0e-6).of(4315.4)
-        assertThat(sneffels.location).isWithin(3.m).of(38.0038, -107.7923)
-        assertThat(sneffels.is14er()).isTrue()
+        with(mountains.first { it.name.contains("\uD83D\uDC3B") }) {
+            assertThat(name).isEqualTo("Grizzly Peak \uD83D\uDC3B")
+            assertThat(elevation.value).isWithin(1.0e-6).of(4265.6)
+            assertThat(location).isWithin(3.m).of(39.0425, -106.5976)
+            assertThat(is14er()).isFalse()
+        }
     }
 }
