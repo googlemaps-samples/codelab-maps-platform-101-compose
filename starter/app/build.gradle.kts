@@ -1,8 +1,8 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
     kotlin("kapt")
-    alias(libs.plugins.hilt.android)
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -64,32 +64,39 @@ kapt {
 
 dependencies {
 
-    implementation(libs.core.ktx.v1120)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.foundation.android)
-    implementation(libs.material3.android)
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation(platform("androidx.compose:compose-bom:2024.03.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
 
-    testImplementation(libs.junit)
-    testImplementation(libs.robolectric)
-    testImplementation(libs.core)
-    testImplementation(libs.truth)
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.11.1")
+    testImplementation("androidx.test:core:1.5.0")
+    testImplementation("com.google.truth:truth:1.4.2")
 
-    androidTestImplementation(libs.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.03.00"))
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    val hiltVersion = "2.51"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
     implementation(kotlin("reflect"))
 
     // Google Maps SDK -- these are here for the data model.  Remove these dependencies and replace
     // with the compose versions.
-    implementation(libs.play.services.maps)
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
     // KTX for the Maps SDK for Android library
-    implementation(libs.maps.ktx)
+    implementation("com.google.maps.android:maps-ktx:5.0.0")
     // KTX for the Maps SDK for Android Utility Library
-    implementation(libs.maps.utils.ktx)
+    implementation("com.google.maps.android:maps-utils-ktx:5.0.0")
 }
