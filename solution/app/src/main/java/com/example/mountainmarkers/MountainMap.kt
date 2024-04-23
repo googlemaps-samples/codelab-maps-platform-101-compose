@@ -38,7 +38,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.CameraPositionState
-import com.google.maps.android.compose.Circle
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.GoogleMapComposable
 import com.google.maps.android.compose.MapEffect
@@ -115,19 +114,19 @@ fun MountainMap(
             when (selectedMarkerType) {
                 MarkerType.Basic -> {
                     BasicMarkersMapContent(
-                        mountainsScreenViewState = viewState,
+                        mountains = viewState.mountains,
                     )
                 }
 
                 MarkerType.Advanced -> {
                     AdvancedMarkersMapContent(
-                        mountainsScreenViewState = viewState,
+                        mountains = viewState.mountains,
                     )
                 }
 
                 MarkerType.Clustered -> {
                     ClusteringMarkersMapContent(
-                        mountainsScreenViewState = viewState,
+                        mountains = viewState.mountains,
                         onClusterClick = { cluster ->
                             val newZoom = cameraPositionState.position.zoom + 1
                             scope.launch {

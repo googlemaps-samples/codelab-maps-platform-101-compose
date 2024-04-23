@@ -15,6 +15,7 @@
 package com.example.mountainmarkers.presentation
 
 import androidx.compose.runtime.Composable
+import com.example.mountainmarkers.data.local.Mountain
 import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
 import com.google.android.gms.maps.model.Marker
 
@@ -23,7 +24,7 @@ import com.google.android.gms.maps.model.Marker
  */
 @Composable
 fun BasicMarkersMapContent(
-    mountainsScreenViewState: MountainList,
+    mountains: List<Mountain>,
     onMountainClick: (Marker) -> Boolean = { false }
 ) {
 }

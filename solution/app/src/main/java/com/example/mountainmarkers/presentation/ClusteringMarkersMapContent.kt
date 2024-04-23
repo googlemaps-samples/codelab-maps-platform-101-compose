@@ -41,7 +41,7 @@ import com.google.maps.android.compose.GoogleMapComposable
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.clustering.Clustering
 
-class IconColor(val iconColor: Color, val backgroundColor: Color, val borderColor: Color)
+data class IconColor(val iconColor: Color, val backgroundColor: Color, val borderColor: Color)
 
 data class MountainClusterItem(
     val mountain: Mountain,
@@ -60,7 +60,7 @@ data class MountainClusterItem(
 @Composable
 @GoogleMapComposable
 fun ClusteringMarkersMapContent(
-    mountainsScreenViewState: MountainList,
+    mountains: List<Mountain>,
     onClusterClick: (Cluster<out ClusterItem>) -> Boolean = { false },
     onMountainClick: (ClusterItem) -> Boolean = { false },
 ) {
@@ -81,9 +81,9 @@ fun ClusteringMarkersMapContent(
         borderColor = MaterialTheme.colorScheme.secondary
     )
 
-    val mountainClusterItems by remember(mountainsScreenViewState.mountains) {
+    val mountainClusterItems by remember(mountains) {
         mutableStateOf(
-            mountainsScreenViewState.mountains.map { mountain ->
+            mountains.map { mountain ->
                 MountainClusterItem(
                     mountain = mountain,
                     snippetString = unitsConverter.toElevationString(resources, mountain.elevation)

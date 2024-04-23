@@ -15,6 +15,7 @@
 package com.example.mountainmarkers.presentation
 
 import androidx.compose.runtime.Composable
+import com.example.mountainmarkers.data.local.Mountain
 import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterItem
@@ -24,7 +25,7 @@ import com.google.maps.android.clustering.ClusterItem
  */
 @Composable
 fun ClusteringMarkersMapContent(
-    mountainsScreenViewState: MountainList,
+    mountains: List<Mountain>,
     onClusterClick: (Cluster<out ClusterItem>) -> Boolean = { false },
     onMountainClick: (ClusterItem) -> Boolean = { false },
 ) {
