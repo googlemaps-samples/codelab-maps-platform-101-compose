@@ -22,9 +22,13 @@ import com.google.android.gms.maps.model.Marker
 /**
  * [GoogleMapComposable] which renders a [MountainList] as a set of [AdvancedMarker]s
  */
+// TODO: Add @GoogleMapComposable annotation
 @Composable
 fun AdvancedMarkersMapContent(
     mountains: List<Mountain>,
     onMountainClick: (Marker) -> Boolean = { false },
 ) {
+    // TODO: Create custom [PinConfig]s for fourteeners and for other mountains
+
+    // TODO: Create AdvancedMarkers from each of the mountains
 }

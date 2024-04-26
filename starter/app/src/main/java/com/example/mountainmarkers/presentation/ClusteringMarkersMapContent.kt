@@ -20,13 +20,23 @@ import com.example.mountainmarkers.presentation.MountainsScreenViewState.Mountai
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterItem
 
+// TODO: Create data class MountainClusterItem which implements a [ClusterItem]
+
+// TODO: Create data class IconColor
+
 /**
  * [GoogleMapComposable] which renders a [MountainList] using the [Clustering] composable
  */
+// TODO: Add @GoogleMapComposable annotation
 @Composable
 fun ClusteringMarkersMapContent(
     mountains: List<Mountain>,
     onClusterClick: (Cluster<out ClusterItem>) -> Boolean = { false },
     onMountainClick: (ClusterItem) -> Boolean = { false },
 ) {
+    // TODO: Create color schemes for fourteeners and non-fourteeners
+
+    // TODO: Create mountainClusterItems from each of the mountains
 }
+
+// TODO: Create SingleMountain composable to render a customized icon for an individual mountain

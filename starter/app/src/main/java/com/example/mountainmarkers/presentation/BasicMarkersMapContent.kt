@@ -22,9 +22,13 @@ import com.google.android.gms.maps.model.Marker
 /**
  * [GoogleMapComposable] which renders a [MountainList] as a set of basic [Marker]s
  */
+// TODO: Add @GoogleMapComposable annotation
 @Composable
 fun BasicMarkersMapContent(
     mountains: List<Mountain>,
     onMountainClick: (Marker) -> Boolean = { false }
 ) {
+    // TODO: Create custom icons for fourteeners and for other mountains
+
+    // TODO: Create Markers from each of the mountains
 }

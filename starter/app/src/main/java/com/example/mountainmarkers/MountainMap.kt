@@ -33,12 +33,30 @@ fun MountainMap(
 ) {
     var isMapLoaded by remember { mutableStateOf(false) }
 
+    // TODO: Create cameraPositionState
+
+    // TODO: Create scope from rememberCoroutineScope
+    //   Add LaunchedEffect to zoom when the bounding box changes
+    //   Add LaunchedEffect to react to events from the ViewModel
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
     ) {
-        // Add GoogleMap here
+        // TODO: Add GoogleMap here
+
+        // TODO: Add cameraPositionState to GoogleMap
+
+        // TODO: Add GoogleMap content
+
+        // TODO: Add call to ColoradoPolygon.  Inside the GoogleMap content, but outside of the when
+        // statement
+
+        // TODO: Add code to add KmlLayer.  Inside the GoogleMap content, but outside of the when
+        // statement
+
+        // TODO: Add ScaleBar outside of of the GoogleMap content
 
         if (!isMapLoaded) {
             AnimatedVisibility(
@@ -56,3 +74,7 @@ fun MountainMap(
         }
     }
 }
+
+// TODO: Create zoomAll function
+
+// TODO: Create ColoradoPolygon function

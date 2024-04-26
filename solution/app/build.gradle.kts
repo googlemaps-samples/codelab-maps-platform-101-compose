@@ -94,11 +94,12 @@ dependencies {
     implementation(kotlin("reflect"))
 
     // Google Maps Compose library
-    implementation("com.google.maps.android:maps-compose:4.4.0")
+    val mapsComposeVersion = "4.4.1"
+    implementation("com.google.maps.android:maps-compose:$mapsComposeVersion")
     // Google Maps Compose utility library
-    implementation("com.google.maps.android:maps-compose-utils:4.4.0")
+    implementation("com.google.maps.android:maps-compose-utils:$mapsComposeVersion")
     // Google Maps Compose widgets library
-    implementation("com.google.maps.android:maps-compose-widgets:4.4.0")
+    implementation("com.google.maps.android:maps-compose-widgets:$mapsComposeVersion")
 }
 
 secrets {
