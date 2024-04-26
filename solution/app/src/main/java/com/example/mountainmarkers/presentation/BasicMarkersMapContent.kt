@@ -20,6 +20,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import com.example.mountainmarkers.R
+import com.example.mountainmarkers.data.local.Mountain
 import com.example.mountainmarkers.data.local.is14er
 import com.example.mountainmarkers.presentation.utils.BitmapParameters
 import com.example.mountainmarkers.data.utils.toElevationString
@@ -36,7 +37,7 @@ import com.google.maps.android.compose.rememberMarkerState
 @Composable
 @GoogleMapComposable
 fun BasicMarkersMapContent(
-    mountainsScreenViewState: MountainList,
+    mountains: List<Mountain>,
     onMountainClick: (Marker) -> Boolean = { false }
 ) {
     // Create mountainIcon and fourteenerIcon
@@ -58,7 +59,7 @@ fun BasicMarkersMapContent(
         )
     )
 
-    mountainsScreenViewState.mountains.forEach { mountain ->
+    mountains.forEach { mountain ->
         val icon = if (mountain.is14er()) fourteenerIcon else mountainIcon
         Marker(
             state = rememberMarkerState(position = mountain.location),

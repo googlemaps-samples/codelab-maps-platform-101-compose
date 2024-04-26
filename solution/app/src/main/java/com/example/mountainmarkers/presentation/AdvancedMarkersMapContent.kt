@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import com.example.mountainmarkers.R
+import com.example.mountainmarkers.data.local.Mountain
 import com.example.mountainmarkers.data.local.is14er
 import com.example.mountainmarkers.data.utils.toElevationString
 import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
@@ -37,7 +38,7 @@ import com.google.maps.android.compose.rememberMarkerState
 @Composable
 @GoogleMapComposable
 fun AdvancedMarkersMapContent(
-    mountainsScreenViewState: MountainList,
+    mountains: List<Mountain>,
     onMountainClick: (Marker) -> Boolean = { false },
 ) {
     val mountainIcon = vectorToBitmap(
@@ -70,7 +71,7 @@ fun AdvancedMarkersMapContent(
         build()
     }
 
-    mountainsScreenViewState.mountains.forEach { mountain ->
+    mountains.forEach { mountain ->
         val pin = if (mountain.is14er()) fourteenerPin else mountainPin
         AdvancedMarker(
             state = rememberMarkerState(position = mountain.location),

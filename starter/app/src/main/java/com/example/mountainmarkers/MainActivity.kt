@@ -25,7 +25,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
                     dynamicColor = false
                 ) {
                     // Remember the type of marker we want to show
-                    var selectedMarkerType by remember {
+                    var selectedMarkerType by rememberSaveable {
                         mutableStateOf(MarkerType.Basic)
                     }
 
