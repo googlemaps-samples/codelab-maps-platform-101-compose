@@ -32,9 +32,11 @@ If you find a bug, or have a feature request, please
 [file an issue] on GitHub. If you would like to get answers to technical
 questions from other Google Maps Platform developers, ask through one of our
 [developer community channels](https://developers.google.com/maps/developer-community).
-If you'd like to contribute, please check the Contributing guide.
+If you'd like to contribute, please check the [contributing guide].
 
 [codelab]: https://developers.google.com/codelabs/maps-platform/maps-platform-101-compose#0
 [file an issue]: https://github.com/googlemaps-samples/codelab-maps-platform-101-compose/issues
 [pull request]: https://github.com/googlemaps-samples/codelab-maps-platform-101-compose/compare
 [code of conduct]: CODE_OF_CONDUCT.md
+[contributing guide]: CONTRIBUTING.md
+
