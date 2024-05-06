@@ -4,6 +4,10 @@ Add a map to your Android app (Kotlin with Compose) codelab
 ## Description
 Accompanying starter and solution code for the [Add a map to your Android app (Kotlin with Compose) codelab ][codelab] codelab.
 
+## Requirements
+
+* [Android Studio Iguana](https://developer.android.com/studio) or later
+
 ## Support
 If you find a bug, please [file an issue]. Or, if you'd like to contribute, send us a [pull request] and refer to our [code of conduct].
 
