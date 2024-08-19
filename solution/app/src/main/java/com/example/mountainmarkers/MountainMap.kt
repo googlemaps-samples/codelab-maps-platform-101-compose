@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -33,6 +34,7 @@ import com.example.mountainmarkers.presentation.MountainsScreenEvent
 import com.example.mountainmarkers.presentation.MountainsScreenViewState
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.Projection
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
@@ -49,19 +51,23 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.widgets.ScaleBar
 import com.google.maps.android.data.kml.KmlLayer
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 /**
  * Shows a [GoogleMap] with collection of markers
  */
-@OptIn(MapsComposeExperimentalApi::class)
+@OptIn(MapsComposeExperimentalApi::class, FlowPreview::class)
 @Composable
 fun MountainMap(
     paddingValues: PaddingValues,
     viewState: MountainsScreenViewState.MountainList,
     eventFlow: Flow<MountainsScreenEvent>,
     selectedMarkerType: MarkerType,
+    onCameraChange: (Projection) -> Unit = {}
 ) {
     var isMapLoaded by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -70,6 +76,14 @@ fun MountainMap(
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(viewState.boundingBox.center, 5f)
+    }
+
+    LaunchedEffect(cameraPositionState) {
+        snapshotFlow { cameraPositionState.position }
+            .debounce(300)
+            .collect {
+                cameraPositionState.projection?.let(onCameraChange)
+            }
     }
 
     val mapProperties by remember {

@@ -14,6 +14,7 @@
 
 package com.example.mountainmarkers.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mountainmarkers.data.local.MountainsRepository
@@ -80,6 +81,9 @@ constructor(
     when (event) {
       OnZoomAll -> onZoomAll()
       OnToggleAllPeaks -> toggleAllPeaks()
+      is MountainsViewModelEvent.OnCameraChange -> {
+        Log.d("Camera changed", event.cameraProjection.visibleRegion.latLngBounds.toString())
+      }
     }
   }
 
