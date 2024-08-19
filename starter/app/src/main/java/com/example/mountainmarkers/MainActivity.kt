@@ -17,6 +17,7 @@ package com.example.mountainmarkers
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +45,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         setContent {
             val unitsConverter = if (LocalConfiguration.current.locales.get(0).country == "US") {
@@ -107,4 +109,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
