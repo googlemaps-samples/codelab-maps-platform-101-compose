@@ -99,7 +99,12 @@ class MainActivity : ComponentActivity() {
                                     paddingValues,
                                     viewState,
                                     viewModel.getEventChannel(),
-                                    selectedMarkerType
+                                    selectedMarkerType,
+                                    onCameraChange = {
+                                        viewModel.onEvent(
+                                            MountainsViewModelEvent.OnCameraChange(it)
+                                        )
+                                    }
                                 )
                             }
                         }

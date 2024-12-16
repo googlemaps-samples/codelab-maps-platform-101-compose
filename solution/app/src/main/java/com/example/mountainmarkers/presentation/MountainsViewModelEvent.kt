@@ -14,10 +14,13 @@
 
 package com.example.mountainmarkers.presentation
 
+import com.google.android.gms.maps.Projection
+
 /**
  * Events that the UI can send to the [MountainsViewModel]
  */
 sealed class MountainsViewModelEvent {
+    data class OnCameraChange(val cameraProjection: Projection) : MountainsViewModelEvent()
     data object OnZoomAll: MountainsViewModelEvent()
     data object OnToggleAllPeaks: MountainsViewModelEvent()
 }
