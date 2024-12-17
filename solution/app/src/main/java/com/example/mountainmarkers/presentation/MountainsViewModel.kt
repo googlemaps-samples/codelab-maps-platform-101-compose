@@ -17,6 +17,7 @@ package com.example.mountainmarkers.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mountainmarkers.MarkerType
 import com.example.mountainmarkers.data.local.MountainsRepository
 import com.example.mountainmarkers.data.local.is14er
 import com.example.mountainmarkers.domain.mappers.toLatLngBounds
@@ -29,8 +30,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.WhileSubscribed
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * ViewModel for loading and managing the list of mountains
@@ -45,6 +49,22 @@ constructor(
 
   // Event channel to send events to the UI
   internal fun getEventChannel() = _eventChannel.receiveAsFlow()
+
+  private val _markerType = MutableStateFlow(MarkerType.Basic)
+  val markerType = _markerType.asStateFlow()
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(5.seconds),
+      initialValue = MarkerType.Basic
+    )
+
+  private val _loading = MutableStateFlow(true)
+  val loading = _loading.asStateFlow()
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(5.seconds),
+      initialValue = true
+    )
 
   // Whether or not to show all of the high peaks
   private var showAllMountains = MutableStateFlow(false)
@@ -68,13 +88,6 @@ constructor(
       started = SharingStarted.WhileSubscribed(5000),
       initialValue = MountainsScreenViewState.Loading
     )
-
-  init {
-    // Load the full set of mountains
-    viewModelScope.launch {
-      mountainsRepository.loadMountains()
-    }
-  }
 
   // Handle user events
   fun onEvent(event: MountainsViewModelEvent) {

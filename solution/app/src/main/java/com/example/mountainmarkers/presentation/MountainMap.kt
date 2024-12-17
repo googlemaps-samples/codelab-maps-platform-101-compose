@@ -1,4 +1,4 @@
-package com.example.mountainmarkers
+package com.example.mountainmarkers.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -24,14 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.mountainmarkers.MarkerType
+import com.example.mountainmarkers.R
 import com.example.mountainmarkers.data.utils.DMS
 import com.example.mountainmarkers.data.utils.Direction.WEST
 import com.example.mountainmarkers.data.utils.toDecimalDegrees
-import com.example.mountainmarkers.presentation.AdvancedMarkersMapContent
-import com.example.mountainmarkers.presentation.BasicMarkersMapContent
-import com.example.mountainmarkers.presentation.ClusteringMarkersMapContent
-import com.example.mountainmarkers.presentation.MountainsScreenEvent
-import com.example.mountainmarkers.presentation.MountainsScreenViewState
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.Projection
@@ -54,7 +51,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 /**
@@ -95,7 +91,7 @@ fun MountainMap(
         )
     }
 
-    LaunchedEffect(true) {
+    LaunchedEffect(eventFlow) {
         eventFlow.collect { event ->
             when (event) {
                 MountainsScreenEvent.OnZoomAll -> {
@@ -105,7 +101,7 @@ fun MountainMap(
         }
     }
 
-    LaunchedEffect(key1 = viewState.boundingBox) {
+    LaunchedEffect(viewState.boundingBox) {
         zoomAll(scope, cameraPositionState, viewState.boundingBox)
     }
 

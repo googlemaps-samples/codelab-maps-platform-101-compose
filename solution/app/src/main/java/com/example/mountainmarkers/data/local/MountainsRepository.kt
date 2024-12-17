@@ -14,49 +14,70 @@
 
 package com.example.mountainmarkers.data.local
 
-import android.content.Context
+import android.content.res.AssetManager
+import android.util.Log
 import android.util.Xml
-import com.example.mountainmarkers.R
 import com.example.mountainmarkers.data.utils.meters
 import com.google.android.gms.maps.model.LatLng
-import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
 import java.io.IOException
-import java.io.InputStream
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
+import java.io.Closeable
+import java.io.Reader
 
 /**
  * Repository for loading the list of mountain peaks.
  */
-class MountainsRepository(@ApplicationContext val context: Context) {
+class MountainsRepository(
+  private val assetManager: AssetManager,
+  private val coroutineScope: CoroutineScope
+) : Closeable {
   private val _mountains = MutableStateFlow(emptyList<Mountain>())
-  val mountains: StateFlow<List<Mountain>> = _mountains
-  private var loaded = false
+  val mountains = _mountains.asStateFlow()
+
+  private val _loading = MutableStateFlow(false)
+  val loading = _loading.asStateFlow()
+
+  private val mutex = Mutex()
 
   /**
    * Loads the list of mountains from the list of mountains from the raw resource.
    */
-  suspend fun loadMountains(): StateFlow<List<Mountain>> {
-    if (!loaded) {
-      loaded = true
-      _mountains.value = withContext(Dispatchers.IO) {
-        context.resources.openRawResource(R.raw.top_peaks).use { inputStream ->
-          readMountains(inputStream)
+  suspend fun loadMountains() {
+    // Use the mutex to ensure the mountains are loaded only once
+    mutex.withLock {
+      if (_mountains.value.isEmpty()) {
+        _loading.value = true
+        try {
+          _mountains.value = withContext(Dispatchers.IO) {
+            println("Loading mountains from assets")
+            assetManager.open("top_peaks.gpx").bufferedReader().use {
+              println("reading mountains")
+              readMountains(it)
+            }
+          }
+        } catch (e: IOException) {
+          Log.e("MountainsRepository", "Error loading mountains")
+        } finally {
+          _loading.value = false
         }
       }
     }
-    return mountains
   }
 
   /**
    * Reads the [Waypoint]s from the given [inputStream] and returns a list of [Mountain]s.
    */
-  private fun readMountains(inputStream: InputStream) =
-    readWaypoints(inputStream).mapIndexed { index, waypoint ->
+  private fun readMountains(input: Reader) =
+    readWaypoints(input).mapIndexed { index, waypoint ->
       waypoint.toMountain(index)
     }.toList()
 
@@ -87,11 +108,11 @@ class MountainsRepository(@ApplicationContext val context: Context) {
   /**
    * Read all of the waypoints from a GPX file.
    */
-  private fun readWaypoints(inputStream: InputStream): Sequence<Waypoint> = sequence {
+  private fun readWaypoints(input: Reader): Sequence<Waypoint> = sequence {
     // We don't use namespaces
     val ns: String? = null
     val parser = Xml.newPullParser()
-    parser.setInput(inputStream, null)
+    parser.setInput(input)
 
     try {
       var eventType = parser.eventType
@@ -129,6 +150,11 @@ class MountainsRepository(@ApplicationContext val context: Context) {
     } catch (e: IOException) {
       // Handle IO errors
     }
+  }
+
+  override fun close() {
+    // Cancel any ongoing coroutines or release resources here if needed
+    coroutineScope.cancel()
   }
 }
 

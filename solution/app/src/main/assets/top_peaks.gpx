@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" >
+<wpt lat="39.1178" lon="-106.4454">
+        <name>Mount Elbert</name>
+        <ele>4401.2</ele>
+</wpt>
+<wpt lat="39.1875" lon="-106.4757">
+        <name>Mount Massive</name>
+        <ele>4398.0</ele>
+</wpt>
+<wpt lat="38.9244" lon="-106.3207">
+        <name>Mount Harvard</name>
+        <ele>4395.6</ele>
+</wpt>
+<wpt lat="37.5775" lon="-105.4856">
+        <name>Blanca Peak</name>
+        <ele>4374.0</ele>
+</wpt>
+<wpt lat="39.0294" lon="-106.4729">
+        <name>La Plata Peak</name>
+        <ele>4372.0</ele>
+</wpt>
+<wpt lat="38.0717" lon="-107.4621">
+        <name>Uncompahgre Peak</name>
+        <ele>4365.0</ele>
+</wpt>
+<wpt lat="37.9669" lon="-105.5855">
+        <name>Crestone Peak</name>
+        <ele>4359.0</ele>
+</wpt>
+<wpt lat="39.3515" lon="-106.1116">
+        <name>Mount Lincoln</name>
+        <ele>4356.5</ele>
+</wpt>
+<wpt lat="39.0097" lon="-106.8614">
+        <name>Castle Peak</name>
+        <ele>4352.2</ele>
+</wpt>
+<wpt lat="39.6339" lon="-105.8176">
+        <name>Grays Peak</name>
+        <ele>4352.0</ele>
+</wpt>
+<wpt lat="38.6741" lon="-106.2462">
+        <name>Mount Antero</name>
+        <ele>4351.4</ele>
+</wpt>
+<wpt lat="39.6428" lon="-105.8212">
+        <name>Torreys Peak</name>
+        <ele>4351.0</ele>
+</wpt>
+<wpt lat="39.5883" lon="-105.6438">
+        <name>Mount Blue Sky</name>
+        <ele>4350.0</ele>
+</wpt>
+<wpt lat="39.3973" lon="-106.1064">
+        <name>Quandary Peak</name>
+        <ele>4349.9</ele>
+</wpt>
+<wpt lat="40.255" lon="-105.6151">
+        <name>Longs Peak</name>
+        <ele>4346.0</ele>
+</wpt>
+<wpt lat="37.8391" lon="-107.9916">
+        <name>Mount Wilson</name>
+        <ele>4344.0</ele>
+</wpt>
+<wpt lat="38.6192" lon="-106.2393">
+        <name>Mount Shavano</name>
+        <ele>4337.7</ele>
+</wpt>
+<wpt lat="38.7492" lon="-106.2424">
+        <name>Mount Princeton</name>
+        <ele>4329.3</ele>
+</wpt>
+<wpt lat="38.9607" lon="-106.3607">
+        <name>Mount Belford</name>
+        <ele>4329.1</ele>
+</wpt>
+<wpt lat="37.9647" lon="-105.5766">
+        <name>Crestone Needle</name>
+        <ele>4329.0</ele>
+</wpt>
+<wpt lat="38.8442" lon="-106.3138">
+        <name>Mount Yale</name>
+        <ele>4328.2</ele>
+</wpt>
+<wpt lat="39.3354" lon="-106.1077">
+        <name>Mount Bross</name>
+        <ele>4321.6</ele>
+</wpt>
+<wpt lat="37.9797" lon="-105.6026">
+        <name>Kit Carson Mountain</name>
+        <ele>4319.0</ele>
+</wpt>
+<wpt lat="39.0708" lon="-106.989">
+        <name>Maroon Peak</name>
+        <ele>4317.0</ele>
+</wpt>
+<wpt lat="38.6255" lon="-106.2509">
+        <name>Tabeguache Peak</name>
+        <ele>4316.7</ele>
+</wpt>
+<wpt lat="38.9648" lon="-106.3388">
+        <name>Mount Oxford </name>
+        <ele>4315.9</ele>
+</wpt>
+<wpt lat="38.0038" lon="-107.7923">
+        <name>Mount Sneffels</name>
+        <ele>4315.4</ele>
+</wpt>
+<wpt lat="39.3396" lon="-106.14">
+        <name>Mount Democrat</name>
+        <ele>4314.5</ele>
+</wpt>
+<wpt lat="39.1503" lon="-107.0829">
+        <name>Capitol Peak</name>
+        <ele>4309.0</ele>
+</wpt>
+<wpt lat="38.8405" lon="-105.0442">
+        <name>Pikes Peak</name>
+        <ele>4302.31</ele>
+</wpt>
+<wpt lat="39.1188" lon="-107.0665">
+        <name>Snowmass Mountain</name>
+        <ele>4297.3</ele>
+</wpt>
+<wpt lat="37.6212" lon="-107.5919">
+        <name>Windom Peak</name>
+        <ele>4296.0</ele>
+</wpt>
+<wpt lat="37.6218" lon="-107.6227">
+        <name>Mount Eolus</name>
+        <ele>4295.0</ele>
+</wpt>
+<wpt lat="37.9804" lon="-105.6066">
+        <name>Challenger Point</name>
+        <ele>4294.0</ele>
+</wpt>
+<wpt lat="38.9039" lon="-106.2975">
+        <name>Mount Columbia</name>
+        <ele>4290.8</ele>
+</wpt>
+<wpt lat="38.9476" lon="-106.3785">
+        <name>Missouri Mountain</name>
+        <ele>4289.8</ele>
+</wpt>
+<wpt lat="37.9762" lon="-105.5552">
+        <name>Humboldt Peak</name>
+        <ele>4289.0</ele>
+</wpt>
+<wpt lat="39.5826" lon="-105.6688">
+        <name>Mount Bierstadt</name>
+        <ele>4287.0</ele>
+</wpt>
+<wpt lat="37.6274" lon="-107.5959">
+        <name>Sunlight Peak</name>
+        <ele>4287.0</ele>
+</wpt>
+<wpt lat="37.913" lon="-107.5044">
+        <name>Handies Peak</name>
+        <ele>4284.8</ele>
+</wpt>
+<wpt lat="37.1224" lon="-105.1858">
+        <name>Culebra Peak</name>
+        <ele>4283.0</ele>
+</wpt>
+<wpt lat="37.5826" lon="-105.4927">
+        <name>Ellingwood Point</name>
+        <ele>4282.0</ele>
+</wpt>
+<wpt lat="37.5837" lon="-105.4449">
+        <name>Mount Lindsey</name>
+        <ele>4282.0</ele>
+</wpt>
+<wpt lat="37.5666" lon="-105.4972">
+        <name>Little Bear Peak</name>
+        <ele>4280.0</ele>
+</wpt>
+<wpt lat="39.225" lon="-106.1699">
+        <name>Mount Sherman</name>
+        <ele>4280.0</ele>
+</wpt>
+<wpt lat="37.941" lon="-107.4219">
+        <name>Redcloud Peak</name>
+        <ele>4280.0</ele>
+</wpt>
+<wpt lat="39.0717" lon="-106.9502">
+        <name>Pyramid Peak</name>
+        <ele>4274.7</ele>
+</wpt>
+<wpt lat="37.8603" lon="-107.9847">
+        <name>Wilson Peak</name>
+        <ele>4274.0</ele>
+</wpt>
+<wpt lat="38.0607" lon="-107.5109">
+        <name>Wetterhorn Peak</name>
+        <ele>4274.0</ele>
+</wpt>
+<wpt lat="37.9868" lon="-106.9313">
+        <name>San Luis Peak</name>
+        <ele>4273.8</ele>
+</wpt>
+<wpt lat="39.4668" lon="-106.4817">
+        <name>Mount of the Holy Cross</name>
+        <ele>4270.5</ele>
+</wpt>
+<wpt lat="38.9455" lon="-106.4381">
+        <name>Huron Peak</name>
+        <ele>4270.2</ele>
+</wpt>
+<wpt lat="37.9228" lon="-107.4256">
+        <name>Sunshine Peak</name>
+        <ele>4269.0</ele>
+</wpt>
+<wpt lat="39.0425" lon="-106.5976">
+        <name>Grizzly Peak 🐻</name>
+        <ele>4265.6</ele>
+</wpt>
+<wpt lat="38.4227" lon="-106.2247">
+        <name>Mount Ouray</name>
+        <ele>4255.4</ele>
+</wpt>
+<wpt lat="37.7993" lon="-107.8285">
+        <name>Vermilion Peak</name>
+        <ele>4237.0</ele>
+</wpt>
+<wpt lat="39.3394" lon="-106.0054">
+        <name>Mount Silverheels</name>
+        <ele>4215.0</ele>
+</wpt>
+<wpt lat="37.6797" lon="-107.3924">
+        <name>Rio Grande Pyramid</name>
+        <ele>4214.4</ele>
+</wpt>
+<wpt lat="39.4448" lon="-105.9705">
+        <name>Bald Mountain</name>
+        <ele>4173.0</ele>
+</wpt>
+<wpt lat="37.607" lon="-107.4936">
+        <name>Mount Oso</name>
+        <ele>4173.0</ele>
+</wpt>
+<wpt lat="39.4853" lon="-106.5367">
+        <name>Mount Jackson</name>
+        <ele>4168.5</ele>
+</wpt>
+<wpt lat="39.7204" lon="-105.8044">
+        <name>Bard Peak</name>
+        <ele>4159.0</ele>
+</wpt>
+<wpt lat="37.3756" lon="-104.9934">
+        <name>West Spanish Peak</name>
+        <ele>4155.0</ele>
+</wpt>
+<wpt lat="39.7601" lon="-106.3407">
+        <name>Mount Powell</name>
+        <ele>4141.0</ele>
+</wpt>
+<wpt lat="40.4845" lon="-105.6464">
+        <name>Hagues Peak</name>
+        <ele>4137.0</ele>
+</wpt>
+<wpt lat="37.8573" lon="-107.623">
+        <name>Tower Mountain</name>
+        <ele>4132.0</ele>
+</wpt>
+<wpt lat="39.0244" lon="-107.1228">
+        <name>Treasure Mountain</name>
+        <ele>4125.0</ele>
+</wpt>
+<wpt lat="40.0265" lon="-105.6504">
+        <name>North Arapaho Peak 🫎</name>
+        <ele>4117.0</ele>
+</wpt>
+<wpt lat="39.8381" lon="-105.7132">
+        <name>Parry Peak</name>
+        <ele>4083.0</ele>
+</wpt>
+<wpt lat="39.1806" lon="-106.6102">
+        <name>Bill Williams Peak</name>
+        <ele>4081.0</ele>
+</wpt>
+<wpt lat="37.7859" lon="-107.7038">
+        <name>Sultan Mountain</name>
+        <ele>4076.0</ele>
+</wpt>
+<wpt lat="37.8492" lon="-105.4949">
+        <name>Mount Herard</name>
+        <ele>4068.0</ele>
+</wpt>
+<wpt lat="38.9917" lon="-106.1249">
+        <name>West Buffalo Peak</name>
+        <ele>4064.0</ele>
+</wpt>
+<wpt lat="37.3506" lon="-106.6968">
+        <name>Summit Peak</name>
+        <ele>4056.2</ele>
+</wpt>
+<wpt lat="37.8536" lon="-108.1082">
+        <name>Middle Peak</name>
+        <ele>4056.0</ele>
+</wpt>
+<wpt lat="38.325" lon="-106.218">
+        <name>Antora Peak</name>
+        <ele>4046.0</ele>
+</wpt>
+<wpt lat="38.6856" lon="-106.6211">
+        <name>Henry Mountain</name>
+        <ele>4042.0</ele>
+</wpt>
+<wpt lat="37.4451" lon="-108.089">
+        <name>Hesperus Mountain</name>
+        <ele>4035.0</ele>
+</wpt>
+<wpt lat="39.4549" lon="-106.197">
+        <name>Jacque Peak</name>
+        <ele>4027.0</ele>
+</wpt>
+<wpt lat="37.4833" lon="-106.4343">
+        <name>Bennett Peak</name>
+        <ele>4026.0</ele>
+</wpt>
+<wpt lat="37.2887" lon="-106.5709">
+        <name>Conejos Peak 🐇</name>
+        <ele>4017.0</ele>
+</wpt>
+<wpt lat="37.663" lon="-107.727">
+        <name>Twilight Peak</name>
+        <ele>4012.0</ele>
+</wpt>
+<wpt lat="37.5741" lon="-106.9815">
+        <name>South River Peak</name>
+        <ele>4009.4</ele>
+</wpt>
+<wpt lat="38.3412" lon="-105.8892">
+        <name>Bushnell Peak</name>
+        <ele>3995.8</ele>
+</wpt>
+<wpt lat="38.7179" lon="-107.1994">
+        <name>West Elk Peak</name>
+        <ele>3975.2</ele>
+</wpt>
+<wpt lat="37.6062" lon="-107.2446">
+        <name>Mount Centennial</name>
+        <ele>3967.0</ele>
+</wpt>
+<wpt lat="40.6068" lon="-105.93">
+        <name>Clark Peak</name>
+        <ele>3948.4</ele>
+</wpt>
+<wpt lat="40.4695" lon="-105.8945">
+        <name>Mount Richthofen</name>
+        <ele>3946.0</ele>
+</wpt>
+<wpt lat="39.0581" lon="-107.2822">
+        <name>Chair Mountain</name>
+        <ele>3879.1</ele>
+</wpt>
+<wpt lat="38.8121" lon="-107.3826">
+        <name>Mount Gunnison</name>
+        <ele>3878.7</ele>
+</wpt>
+<wpt lat="37.3934" lon="-104.9201">
+        <name>East Spanish Peak</name>
+        <ele>3867.0</ele>
+</wpt>
+<wpt lat="38.9562" lon="-107.0107">
+        <name>Gothic Mountain</name>
+        <ele>3850.0</ele>
+</wpt>
+<wpt lat="37.888" lon="-108.2556">
+        <name>Lone Cone</name>
+        <ele>3846.1</ele>
+</wpt>
+<wpt lat="37.4972" lon="-107.3761">
+        <name>Graham Peak</name>
+        <ele>3821.1</ele>
+</wpt>
+<wpt lat="38.8223" lon="-106.9799">
+        <name>Whetstone Mountain</name>
+        <ele>3818.1</ele>
+</wpt>
+<wpt lat="40.4449" lon="-105.8081">
+        <name>Specimen Mountain</name>
+        <ele>3808.0</ele>
+</wpt>
+<wpt lat="38.8464" lon="-107.2233">
+        <name>East Beckwith Mountain</name>
+        <ele>3792.1</ele>
+</wpt>
+<wpt lat="39.3681" lon="-105.605">
+        <name>Knobby Crest</name>
+        <ele>3790.0</ele>
+</wpt>
+<wpt lat="39.2384" lon="-105.4978">
+        <name>Bison Mountain 🦬</name>
+        <ele>3789.4</ele>
+</wpt>
+<wpt lat="38.8145" lon="-107.1445">
+        <name>Anthracite Range High Point</name>
+        <ele>3777.8</ele>
+</wpt>
+<wpt lat="38.834" lon="-106.6451">
+        <name>Matchless Mountain</name>
+        <ele>3776.0</ele>
+</wpt>
+<wpt lat="40.0147" lon="-107.0833">
+        <name>Flat Top Mountain</name>
+        <ele>3767.7</ele>
+</wpt>
+<wpt lat="37.8815" lon="-105.0133">
+        <name>Greenhorn Mountain</name>
+        <ele>3765.0</ele>
+</wpt>
+<wpt lat="37.7344" lon="-108.058">
+        <name>Elliott Mountain</name>
+        <ele>3763.0</ele>
+</wpt>
+<wpt lat="40.3303" lon="-106.1363">
+        <name>Parkview Mountain</name>
+        <ele>3749.4</ele>
+</wpt>
+<wpt lat="37.3811" lon="-106.492">
+        <name>Cornwall Mountain</name>
+        <ele>3746.0</ele>
+</wpt>
+<wpt lat="40.8313" lon="-106.6631">
+        <name>Mount Zirkel</name>
+        <ele>3714.0</ele>
+</wpt>
+<wpt lat="38.8835" lon="-106.9436">
+        <name>Crested Butte</name>
+        <ele>3709.0</ele>
+</wpt>
+<wpt lat="38.274" lon="-106.867">
+        <name>Sawtooth Mountain</name>
+        <ele>3704.2</ele>
+</wpt>
+<wpt lat="38.7967" lon="-106.6028">
+        <name>Park Cone</name>
+        <ele>3690.0</ele>
+</wpt>
+<wpt lat="38.7943" lon="-107.0431">
+        <name>Carbon Peak</name>
+        <ele>3684.3</ele>
+</wpt>
+<wpt lat="38.7196" lon="-107.3861">
+        <name>Mount Guero</name>
+        <ele>3675.4</ele>
+</wpt>
+<wpt lat="39.4181" lon="-106.7712">
+        <name>Red Table Mountain</name>
+        <ele>3670.7</ele>
+</wpt>
+<wpt lat="37.1418" lon="-106.75">
+        <name>Chalk Benchmark</name>
+        <ele>3669.3</ele>
+</wpt>
+<wpt lat="37.7913" lon="-105.4554">
+        <name>Mount Zwischen</name>
+        <ele>3661.0</ele>
+</wpt>
+<wpt lat="37.9275" lon="-108.0908">
+        <name>Little Cone</name>
+        <ele>3654.0</ele>
+</wpt>
+<wpt lat="39.192" lon="-107.3668">
+        <name>Huntsman Ridge Peak</name>
+        <ele>3614.0</ele>
+</wpt>
+<wpt lat="40.361" lon="-106.2658">
+        <name>Sheep Mountain 🐏</name>
+        <ele>3604.2</ele>
+</wpt>
+<wpt lat="38.6022" lon="-105.6955">
+        <name>Waugh Mountain</name>
+        <ele>3571.0</ele>
+</wpt>
+<wpt lat="38.787" lon="-107.4837">
+        <name>Coal Mountain</name>
+        <ele>3569.0</ele>
+</wpt>
+<wpt lat="39.8552" lon="-106.1854">
+        <name>Williams Peak</name>
+        <ele>3541.8</ele>
+</wpt>
+<wpt lat="39.1572" lon="-105.5815">
+        <name>Puma Peak</name>
+        <ele>3528.0</ele>
+</wpt>
+<wpt lat="37.583" lon="-105.1474">
+        <name>Mount Mestas</name>
+        <ele>3528.0</ele>
+</wpt>
+<wpt lat="38.8324" lon="-105.5553">
+        <name>Thirtynine Mile Mountain</name>
+        <ele>3521.0</ele>
+</wpt>
+<wpt lat="38.4849" lon="-106.5291">
+        <name>Tomichi Dome</name>
+        <ele>3496.0</ele>
+</wpt>
+<wpt lat="39.7943" lon="-107.4176">
+        <name>Blair Mountain</name>
+        <ele>3495.0</ele>
+</wpt>
+<wpt lat="40.2886" lon="-105.5175">
+        <name>Twin Sisters Peaks</name>
+        <ele>3485.0</ele>
+</wpt>
+<wpt lat="40.1619" lon="-106.1285">
+        <name>Elk Mountain</name>
+        <ele>3482.1</ele>
+</wpt>
+<wpt lat="37.6375" lon="-105.2538">
+        <name>Iron Mountain</name>
+        <ele>3480.0</ele>
+</wpt>
+<wpt lat="38.9299" lon="-107.2438">
+        <name>Marcellina Mountain</name>
+        <ele>3461.0</ele>
+</wpt>
+<wpt lat="39.0396" lon="-107.6628">
+        <name>Crater Peak</name>
+        <ele>3454.2</ele>
+</wpt>
+<wpt lat="39.5171" lon="-106.8021">
+        <name>Hardscrabble Mountain</name>
+        <ele>3405.0</ele>
+</wpt>
+<wpt lat="38.2267" lon="-106.7147">
+        <name>Cochetopa Dome</name>
+        <ele>3395.0</ele>
+</wpt>
+<wpt lat="39.3865" lon="-107.866">
+        <name>North Mamm Peak</name>
+        <ele>3391.3</ele>
+</wpt>
+<wpt lat="40.7704" lon="-105.7162">
+        <name>Laramie Mountains HP</name>
+        <ele>3360.0</ele>
+</wpt>
+<wpt lat="40.7636" lon="-107.0575">
+        <name>Sand Mountain North</name>
+        <ele>3317.0</ele>
+</wpt>
+<wpt lat="40.7835" lon="-107.3691">
+        <name>Black Mountain</name>
+        <ele>3312.0</ele>
+</wpt>
+<wpt lat="40.1275" lon="-107.5338">
+        <name>Sleepy Cat Peak</name>
+        <ele>3308.0</ele>
+</wpt>
+<wpt lat="39.1973" lon="-107.522">
+        <name>Spruce Mountain</name>
+        <ele>3303.5</ele>
+</wpt>
+<wpt lat="39.3053" lon="-105.3001">
+        <name>Green Mountain</name>
+        <ele>3178.3</ele>
+</wpt>
+<wpt lat="40.8799" lon="-107.1921">
+        <name>Columbus Mountain</name>
+        <ele>3126.0</ele>
+</wpt>
+<wpt lat="37.2841" lon="-108.7787">
+        <name>Ute Peak</name>
+        <ele>3043.0</ele>
+</wpt>
+<wpt lat="37.308" lon="-107.2864">
+        <name>Horse Mountain</name>
+        <ele>3033.0</ele>
+</wpt>
+</gpx>

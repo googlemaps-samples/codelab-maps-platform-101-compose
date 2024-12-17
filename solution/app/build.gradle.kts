@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.secrets.gradle.plugin)
+    alias(libs.plugins.screenshot)
 
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
@@ -46,9 +47,14 @@ android {
         buildConfig = true
     }
 
+    experimentalProperties["android.experimental.enableScreenshotTest"] = true
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+        }
+        screenshotTests {
+            imageDifferenceThreshold = 0.035f // 3.5%
         }
     }
 }
@@ -72,6 +78,7 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.core)
     testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

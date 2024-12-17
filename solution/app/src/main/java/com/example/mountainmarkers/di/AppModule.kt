@@ -15,19 +15,25 @@
 package com.example.mountainmarkers.di
 
 import android.app.Application
+import com.example.mountainmarkers.MountainMarkersApplication
 import com.example.mountainmarkers.data.local.MountainsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.DelicateCoroutinesApi
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+    @OptIn(DelicateCoroutinesApi::class)
     @Provides
     @Singleton
-    fun provideMountainRepository(app: Application): MountainsRepository {
-        return MountainsRepository(app)
+    fun provideMountainRepository(application: Application): MountainsRepository {
+        return MountainsRepository(
+            assetManager = application.assets,
+            coroutineScope = (application as MountainMarkersApplication).applicationScope
+        )
     }
 }
