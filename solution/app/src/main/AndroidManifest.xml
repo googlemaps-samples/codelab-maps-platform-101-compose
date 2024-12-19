@@ -24,10 +24,15 @@
             android:theme="@style/Theme.MountainMarkers">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".CreateScreenshotsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MountainMarkers">
+        </activity>
+
     </application>
 
 </manifest>

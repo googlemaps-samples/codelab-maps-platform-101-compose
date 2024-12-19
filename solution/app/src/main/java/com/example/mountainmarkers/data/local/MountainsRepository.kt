@@ -58,9 +58,8 @@ class MountainsRepository(
         _loading.value = true
         try {
           _mountains.value = withContext(Dispatchers.IO) {
-            println("Loading mountains from assets")
+            Log.w("MountainsRepository", "Loading mountains from assets")
             assetManager.open("top_peaks.gpx").bufferedReader().use {
-              println("reading mountains")
               readMountains(it)
             }
           }

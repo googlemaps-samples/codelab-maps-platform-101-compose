@@ -34,7 +34,6 @@ import com.example.mountainmarkers.R
 import com.example.mountainmarkers.data.local.Mountain
 import com.example.mountainmarkers.data.local.is14er
 import com.example.mountainmarkers.data.utils.LocalUnitsConverter
-import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.compose.GoogleMapComposable
@@ -63,6 +62,7 @@ fun ClusteringMarkersMapContent(
     mountains: List<Mountain>,
     onClusterClick: (Cluster<out ClusterItem>) -> Boolean = { false },
     onMountainClick: (ClusterItem) -> Boolean = { false },
+    styleMarkers: Boolean,
 ) {
     val unitsConverter = LocalUnitsConverter.current
     val resources = LocalContext.current.resources
@@ -92,6 +92,11 @@ fun ClusteringMarkersMapContent(
         )
     }
 
+    val colors = mapOf(
+        true to fourteenerColors,
+        false to otherColors
+    )
+
     Clustering(
         items = mountainClusterItems,
         onClusterClick = { onClusterClick(it) },
@@ -102,14 +107,9 @@ fun ClusteringMarkersMapContent(
         onClusterItemInfoWindowClick = {
         },
         clusterContent = null,
-        clusterItemContent = { mountainItem ->
-            val colors = if (mountainItem.mountain.is14er()) {
-                fourteenerColors
-            } else {
-                otherColors
-            }
-            SingleMountain(colors)
-        },
+        clusterItemContent = if (styleMarkers) {
+            { mountainItem -> SingleMountain(colors.getValue(mountainItem.mountain.is14er())) }
+        } else null,
     )
 }
 

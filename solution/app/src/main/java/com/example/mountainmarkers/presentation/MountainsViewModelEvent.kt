@@ -14,6 +14,7 @@
 
 package com.example.mountainmarkers.presentation
 
+import com.example.mountainmarkers.MarkerType
 import com.google.android.gms.maps.Projection
 
 /**
@@ -21,6 +22,9 @@ import com.google.android.gms.maps.Projection
  */
 sealed class MountainsViewModelEvent {
     data class OnCameraChange(val cameraProjection: Projection) : MountainsViewModelEvent()
+    data class OnMarkerTypeChange(val markerType: MarkerType) : MountainsViewModelEvent()
+    data class OnShowAllMountainsChange(val showAllMountains: Boolean) : MountainsViewModelEvent()
+
     data object OnZoomAll: MountainsViewModelEvent()
     data object OnToggleAllPeaks: MountainsViewModelEvent()
 }

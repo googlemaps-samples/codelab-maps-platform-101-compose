@@ -19,13 +19,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.mountainmarkers.R
 import com.example.mountainmarkers.data.local.Mountain
 import com.example.mountainmarkers.data.local.is14er
+import com.example.mountainmarkers.data.utils.m
 import com.example.mountainmarkers.presentation.utils.BitmapParameters
 import com.example.mountainmarkers.data.utils.toElevationString
 import com.example.mountainmarkers.presentation.utils.vectorToBitmap
-import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.GoogleMapComposable
 import com.google.maps.android.compose.Marker
@@ -38,7 +40,8 @@ import com.google.maps.android.compose.rememberMarkerState
 @GoogleMapComposable
 fun BasicMarkersMapContent(
     mountains: List<Mountain>,
-    onMountainClick: (Marker) -> Boolean = { false }
+    onMountainClick: (Marker) -> Boolean = { false },
+    styleMarkers: Boolean
 ) {
     // Create mountainIcon and fourteenerIcon
     val mountainIcon = vectorToBitmap(
@@ -67,7 +70,7 @@ fun BasicMarkersMapContent(
             snippet = mountain.elevation.toElevationString(),
             tag = mountain,
             anchor = Offset(0.5f, 0.5f),
-            icon = icon,
+            icon = if (styleMarkers) icon else null,
             onClick = { marker ->
                 onMountainClick(marker)
                 false
@@ -76,3 +79,35 @@ fun BasicMarkersMapContent(
         )
     }
 }
+
+//@Preview
+//@Composable
+//fun BasicMarkersMapContentPreview() {
+//    var id = 0
+//
+//    val mountains = listOf(
+//        Mountain(
+//            id = id++,
+//            "Mount Everest",
+//            LatLng(39.1178, -106.4454),
+//            4401.2.m,
+//        ),
+//        Mountain(
+//            id = id++,
+//            "Uncompahgre Peak",
+//            LatLng(38.0717,-107.4621),
+//            4365.0.m,
+//        ),
+//        Mountain(
+//            id = id++,
+//            "Handies Peak",
+//            LatLng(37.913, -107.5044),
+//            4284.8.m,
+//        )
+//    )
+//
+//    BasicMarkersMapContent(
+//        mountains = mountains,
+//        styleMarkers = true,
+//    )
+//}

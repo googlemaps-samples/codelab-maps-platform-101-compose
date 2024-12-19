@@ -22,7 +22,6 @@ import com.example.mountainmarkers.R
 import com.example.mountainmarkers.data.local.Mountain
 import com.example.mountainmarkers.data.local.is14er
 import com.example.mountainmarkers.data.utils.toElevationString
-import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
 import com.example.mountainmarkers.presentation.utils.BitmapParameters
 import com.example.mountainmarkers.presentation.utils.vectorToBitmap
 import com.google.android.gms.maps.model.AdvancedMarkerOptions
@@ -40,6 +39,7 @@ import com.google.maps.android.compose.rememberMarkerState
 fun AdvancedMarkersMapContent(
     mountains: List<Mountain>,
     onMountainClick: (Marker) -> Boolean = { false },
+    styleMarkers: Boolean,
 ) {
     val mountainIcon = vectorToBitmap(
         LocalContext.current,
@@ -78,7 +78,7 @@ fun AdvancedMarkersMapContent(
             title = mountain.name,
             snippet = mountain.elevation.toElevationString(),
             collisionBehavior = AdvancedMarkerOptions.CollisionBehavior.REQUIRED_AND_HIDES_OPTIONAL,
-            pinConfig = pin,
+            pinConfig = if (styleMarkers) pin else null,
             onClick = { marker ->
                 onMountainClick(marker)
                 false

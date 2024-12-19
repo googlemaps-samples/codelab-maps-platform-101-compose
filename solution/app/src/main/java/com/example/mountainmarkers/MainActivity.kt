@@ -19,16 +19,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -36,29 +30,50 @@ import com.example.mountainmarkers.data.utils.ImperialUnitsConverter
 import com.example.mountainmarkers.data.utils.LocalUnitsConverter
 import com.example.mountainmarkers.data.utils.MetricUnitsConverter
 import com.example.mountainmarkers.presentation.MountainMapScreen
-import com.example.mountainmarkers.presentation.MountainsScreenViewState.Loading
-import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
 import com.example.mountainmarkers.presentation.MountainsViewModel
-import com.example.mountainmarkers.presentation.common.BigSpinner
+import com.example.mountainmarkers.presentation.MountainsViewModelEvent
 import com.example.mountainmarkers.ui.theme.MountainMarkersTheme
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.maps.android.compose.rememberCameraPositionState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: MountainsViewModel by viewModels()
 
+    @OptIn(FlowPreview::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
-            val screenViewState by viewModel.mountainsScreenViewState.collectAsStateWithLifecycle()
+            val markerType by viewModel.markerType.collectAsStateWithLifecycle()
+            val loading by viewModel.loading.collectAsStateWithLifecycle()
+            val mountains by viewModel.mountains.collectAsStateWithLifecycle()
+            val showAllMountains by viewModel.showAllMountains.collectAsStateWithLifecycle()
 
             val unitsConverter = if (LocalConfiguration.current.locales.get(0).country == "US") {
                 ImperialUnitsConverter
             } else {
                 MetricUnitsConverter
+            }
+
+            val cameraPositionState = rememberCameraPositionState {
+                position = CameraPosition.fromLatLngZoom(mountains.boundingBox.center, 5f)
+            }
+
+            // Optionally, send changes to the camera position to the ViewModel
+            LaunchedEffect(cameraPositionState) {
+                snapshotFlow { cameraPositionState.position }
+                    .debounce(300)
+                    .collect {
+                        cameraPositionState.projection?.let {
+                            viewModel.onEvent(MountainsViewModelEvent.OnCameraChange(it))
+                        }
+                    }
             }
 
             CompositionLocalProvider(
@@ -67,26 +82,17 @@ class MainActivity : ComponentActivity() {
                 MountainMarkersTheme(
                     dynamicColor = false
                 ) {
-
-                    when (screenViewState) {
-                        Loading -> LoadingScreen()
-                        is MountainList -> MountainMapScreen(viewModel)
-                    }
+                    MountainMapScreen(
+                        markerType = markerType,
+                        loading = loading,
+                        mountains = mountains,
+                        showAllMountains = showAllMountains,
+                        onEvent = { viewModel.onEvent(it) },
+                        cameraPositionState = cameraPositionState,
+                        showMarkers = false
+                    )
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun LoadingScreen() {
-    Scaffold { paddingValues ->
-        Surface(
-            modifier = Modifier.padding(paddingValues)
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            BigSpinner(paddingValues)
         }
     }
 }
