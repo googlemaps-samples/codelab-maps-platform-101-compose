@@ -46,30 +46,35 @@ import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.delay
 
 enum class Scenario {
-//    NONE,
+    INTRO,
+
     NULL_ISLAND,
     CAMERA1,
     CAMERA2,
     BASIC_MARKERS,
-    BASIC_MARKERS_STYLED,
+    BASIC_MARKERS_CUSTOMIZED,
 
     ADVANCED_MARKERS,
-    ADVANCED_MARKERS_STYLED,
+    ADVANCED_MARKERS_CUSTOMIZED,
 
     CLUSTERED_MARKERS_ZOOMED_IN,
     CLUSTERED_MARKERS_EXTENTS,
     CLUSTERED_MARKERS_ZOOMED_OUT,
-    CLUSTERED_MARKERS_STYLED,
+    CLUSTERED_MARKERS_CUSTOMIZED,
 
-    CLUSTERED_MARKERS_BASIC_WITH_COLORADO,
+    BASIC_MARKERS_WITH_COLORADO,
 
     BASIC_FINAL,
     ADVANCED_FINAL,
     CLUSTERED_FINAL
+}
+
+sealed interface Zoom {
+    data object ORIGIN: Zoom
+    data object EXTENTS: Zoom
+    data class CUSTOM(val zoom: Float): Zoom
 }
 
 @AndroidEntryPoint
@@ -82,7 +87,11 @@ class CreateScreenshotsActivity : ComponentActivity() {
         enableEdgeToEdge()
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-//        var scenario = intent.getStringExtra("scenario") ?: "null_island"
+        val scenarioIntent = try {
+                Scenario.valueOf(intent.getStringExtra("scenario")?.uppercase() ?: "NULL_ISLAND")
+            } catch (e: IllegalArgumentException) {
+                Scenario.NULL_ISLAND
+            }
 
         setContent {
             CompositionLocalProvider(
@@ -101,35 +110,47 @@ class CreateScreenshotsActivity : ComponentActivity() {
                     val scope = rememberCoroutineScope()
 
                     var zoom by remember {
-                        mutableStateOf(1f)
+                        mutableStateOf<Zoom>(Zoom.ORIGIN)
                     }
 
                     var scenario by remember {
-                        mutableStateOf(Scenario.NULL_ISLAND)
+                        mutableStateOf(scenarioIntent)
                     }
 
-                    LaunchedEffect(Unit) {
-                        while (true) {
-                            Scenario.entries.forEach {
-                                scenario = it
-                                delay(20.seconds)
-                            }
-                        }
-                    }
+//                    LaunchedEffect(Unit) {
+//                        while (true) {
+//                            Scenario.entries.forEach {
+//                                scenario = it
+//                                delay(20.seconds)
+//                            }
+//                        }
+//                    }
 
                     LaunchedEffect(mountainList, mapLoaded, zoom) {
                         if (mapLoaded) {
                             scope.launch {
-                                if (zoom < 0) {
-                                    zoomAll(scope, cameraPositionState, mountainList.boundingBox)
-                                } else {
-                                    cameraPositionState.animate(
-                                        update = CameraUpdateFactory.newLatLngZoom(
-                                            mountainList.boundingBox.center,
-                                            zoom
-                                        ),
-                                        durationMs = 1000
-                                    )
+                                when (val z = zoom) {
+                                    Zoom.ORIGIN -> {
+                                        cameraPositionState.animate(
+                                            update = CameraUpdateFactory.newLatLngZoom(
+                                                LatLng(0.0, 0.0),
+                                                1f
+                                            ),
+                                            durationMs = 1000
+                                        )
+                                    }
+                                    Zoom.EXTENTS -> {
+                                        zoomAll(scope, cameraPositionState, mountainList.boundingBox)
+                                    }
+                                    is Zoom.CUSTOM -> {
+                                        cameraPositionState.animate(
+                                            update = CameraUpdateFactory.newLatLngZoom(
+                                                mountainList.boundingBox.center,
+                                                z.zoom
+                                            ),
+                                            durationMs = 1000
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -137,7 +158,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
 
                     when (scenario) {
                         Scenario.NULL_ISLAND -> {
-                            zoom = 1f
+                            zoom = Zoom.ORIGIN
 
                             MountainMapScreenPreview(
                                 MountainMapScreenParameters(
@@ -152,7 +173,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.CAMERA1 -> {
-                            zoom = 5f
+                            zoom = Zoom.CUSTOM(5f)
 
                             MountainMapScreenPreview(
                                 MountainMapScreenParameters(
@@ -167,7 +188,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.CAMERA2 -> {
-                            zoom = -1f
+                            zoom = Zoom.EXTENTS
 
                             MountainMapScreenPreview(
                                 MountainMapScreenParameters(
@@ -182,7 +203,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.BASIC_MARKERS ->  {
-                            zoom = -1f
+                            zoom = Zoom.EXTENTS
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = false))
 
@@ -200,8 +221,8 @@ class CreateScreenshotsActivity : ComponentActivity() {
                             )
                         }
 
-                        Scenario.BASIC_MARKERS_STYLED -> {
-                            zoom = -1f
+                        Scenario.BASIC_MARKERS_CUSTOMIZED -> {
+                            zoom = Zoom.EXTENTS
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -220,7 +241,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.ADVANCED_MARKERS -> {
-                            zoom = -1f
+                            zoom = Zoom.EXTENTS
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = false))
 
@@ -238,8 +259,8 @@ class CreateScreenshotsActivity : ComponentActivity() {
                             )
                         }
 
-                        Scenario.ADVANCED_MARKERS_STYLED -> {
-                            zoom = -1f
+                        Scenario.ADVANCED_MARKERS_CUSTOMIZED -> {
+                            zoom = Zoom.EXTENTS
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -258,7 +279,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.CLUSTERED_MARKERS_ZOOMED_IN -> {
-                            zoom = 8f
+                            zoom = Zoom.CUSTOM(8f)
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -277,7 +298,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.CLUSTERED_MARKERS_EXTENTS -> {
-                            zoom = -1f
+                            zoom = Zoom.EXTENTS
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -296,7 +317,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.CLUSTERED_MARKERS_ZOOMED_OUT ->  {
-                            zoom = 5f
+                            zoom = Zoom.CUSTOM(5f)
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -314,8 +335,8 @@ class CreateScreenshotsActivity : ComponentActivity() {
                             )
                         }
 
-                        Scenario.CLUSTERED_MARKERS_STYLED -> {
-                            zoom = 8f
+                        Scenario.CLUSTERED_MARKERS_CUSTOMIZED -> {
+                            zoom = Zoom.CUSTOM(8f)
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -333,8 +354,8 @@ class CreateScreenshotsActivity : ComponentActivity() {
                             )
                         }
 
-                        Scenario.CLUSTERED_MARKERS_BASIC_WITH_COLORADO -> {
-                            zoom = 5f
+                        Scenario.BASIC_MARKERS_WITH_COLORADO -> {
+                            zoom = Zoom.CUSTOM(5f)
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = false))
 
@@ -354,7 +375,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.BASIC_FINAL -> {
-                            zoom = 9f
+                            zoom = Zoom.CUSTOM(9f)
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -376,7 +397,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.ADVANCED_FINAL -> {
-                            zoom = 9f
+                            zoom = Zoom.CUSTOM(9f)
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -398,7 +419,7 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         }
 
                         Scenario.CLUSTERED_FINAL -> {
-                            zoom = -1f
+                            zoom = Zoom.EXTENTS
 
                             viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
 
@@ -413,6 +434,28 @@ class CreateScreenshotsActivity : ComponentActivity() {
                                     showMarkers = true,
                                     showColorado = true,
                                     showRanges = true,
+                                    showScaleBar = true,
+                                ),
+                                onMapLoaded = { mapLoaded = true }
+                            )
+                        }
+
+                        Scenario.INTRO ->  {
+                            zoom = Zoom.EXTENTS
+
+                            viewModel.onEvent(event = MountainsViewModelEvent.OnShowAllMountainsChange(showAllMountains = true))
+
+                            MountainMapScreenPreview(
+                                MountainMapScreenParameters(
+                                    loading = loading,
+                                    mountains = mountainList,
+                                    markerType = MarkerType.Clustered,
+                                    showAllMountains = showAllMountains,
+                                    cameraPositionState = cameraPositionState,
+                                    styleMarkers = true,
+                                    showMarkers = true,
+                                    showColorado = true,
+                                    showRanges = false,
                                     showScaleBar = true,
                                 ),
                                 onMapLoaded = { mapLoaded = true }
