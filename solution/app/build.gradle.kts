@@ -57,6 +57,13 @@ android {
             imageDifferenceThreshold = 0.035f // 3.5%
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 // Allow references to generated code

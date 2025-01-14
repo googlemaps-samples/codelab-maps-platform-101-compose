@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
  Copyright 2024 Google LLC
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,4 +30,5 @@
   <string name="show_all">Show all</string>
 
   <string name="map_id">d4f8839f2ba21d8b</string>
+    <string name="title_activity_basic_map">BasicMapActivity</string>
 </resources>

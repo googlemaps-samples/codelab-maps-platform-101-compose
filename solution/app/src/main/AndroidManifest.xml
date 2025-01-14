@@ -13,10 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MountainMarkers"
         tools:targetApi="35">
+        <activity
+            android:name=".BasicMapActivity"
+            android:exported="true"
+            android:label="@string/title_activity_basic_map"
+            android:theme="@style/Theme.MountainMarkers">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}"/>
+            android:value="${MAPS_API_KEY}" />
 
         <activity
             android:name=".MainActivity"
@@ -24,15 +35,14 @@
             android:theme="@style/Theme.MountainMarkers">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".CreateScreenshotsActivity"
+        <activity
+            android:name=".CreateScreenshotsActivity"
             android:exported="true"
-            android:theme="@style/Theme.MountainMarkers">
-        </activity>
-
+            android:theme="@style/Theme.MountainMarkers"></activity>
     </application>
 
 </manifest>
