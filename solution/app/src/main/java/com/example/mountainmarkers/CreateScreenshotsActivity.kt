@@ -1,15 +1,22 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package com.example.mountainmarkers
 
-import android.app.Activity
-import android.content.Context
-import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.PixelCopy
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -27,7 +34,6 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.mountainmarkers.data.utils.ImperialUnitsConverter
 import com.example.mountainmarkers.data.utils.LocalUnitsConverter
-import com.example.mountainmarkers.presentation.EmptyLatLngBounds
 import com.example.mountainmarkers.presentation.MountainList
 import com.example.mountainmarkers.presentation.MountainMapScreen
 import com.example.mountainmarkers.presentation.MountainsViewModel
@@ -40,12 +46,9 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.rememberCameraPositionState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import kotlin.time.Duration.Companion.seconds
 
 enum class Scenario {
     INTRO,
@@ -77,6 +80,46 @@ sealed interface Zoom {
     data class CUSTOM(val zoom: Float): Zoom
 }
 
+/**
+ * This is a helper activity to generate all the screenshots for the codelab.
+ *
+ * To use it, run this script:
+ *
+ * #!/bin/bash
+ *
+ * # List of scenarios
+ * scenarios=(
+ *     "NULL_ISLAND"
+ *     "CAMERA1"
+ *     "CAMERA2"
+ *     "BASIC_MARKERS"
+ *     "BASIC_MARKERS_CUSTOMIZED"
+ *     "ADVANCED_MARKERS"
+ *     "ADVANCED_MARKERS_CUSTOMIZED"
+ *     "CLUSTERED_MARKERS_ZOOMED_IN"
+ *     "CLUSTERED_MARKERS_EXTENTS"
+ *     "CLUSTERED_MARKERS_ZOOMED_OUT"
+ *     "CLUSTERED_MARKERS_CUSTOMIZED"
+ *     "BASIC_MARKERS_WITH_COLORADO"
+ *     "BASIC_FINAL"
+ *     "ADVANCED_FINAL"
+ *     "CLUSTERED_FINAL"
+ * )
+ *
+ * # Loop through the scenarios
+ * for scenario in "${scenarios[@]}"; do
+ *     echo "Sending scenario: $scenario"
+ *     adb shell am start -n com.example.mountainmarkers/.CreateScreenshotsActivity -e scenario "$scenario"
+ *
+ *     sleep 5  # Wait for the scenario to settle
+ *
+ *     filename_lower=$(echo "$scenario" | tr '[:upper:]' '[:lower:]')  # Convert to lowercase
+ *     adb exec-out screencap -p | convert - -resize 50% "${filename_lower}.png"
+ *     echo "Screenshot saved as ${filename_lower}.png"
+ * done
+ *
+ * echo "All scenarios processed."
+ */
 @AndroidEntryPoint
 class CreateScreenshotsActivity : ComponentActivity() {
     private val viewModel: MountainsViewModel by viewModels()
@@ -92,6 +135,8 @@ class CreateScreenshotsActivity : ComponentActivity() {
             } catch (e: IllegalArgumentException) {
                 Scenario.NULL_ISLAND
             }
+
+        val autoAdvance = intent.getIntExtra("autoadvance", -1)
 
         setContent {
             CompositionLocalProvider(
@@ -117,14 +162,21 @@ class CreateScreenshotsActivity : ComponentActivity() {
                         mutableStateOf(scenarioIntent)
                     }
 
-//                    LaunchedEffect(Unit) {
-//                        while (true) {
-//                            Scenario.entries.forEach {
-//                                scenario = it
-//                                delay(20.seconds)
-//                            }
-//                        }
-//                    }
+                    if (autoAdvance > 0) {
+                        LaunchedEffect(Unit) {
+                            while (true) {
+                                Scenario.entries.forEach {
+                                    scenario = it
+                                    delay(autoAdvance.seconds)
+                                }
+                            }
+                        }
+                    }
+
+                    val context = LocalView.current.context
+                    LaunchedEffect(scenario) {
+                        Toast.makeText(context, "Switching to ${scenario.prettyPrint()}", Toast.LENGTH_SHORT).show()
+                    }
 
                     LaunchedEffect(mountainList, mapLoaded, zoom) {
                         if (mapLoaded) {
@@ -468,6 +520,11 @@ class CreateScreenshotsActivity : ComponentActivity() {
     }
 }
 
+private fun Scenario.prettyPrint(): String = this.name.split("_")
+    .joinToString(" ") {
+        it.lowercase().replaceFirstChar { char -> char.uppercase() }
+    }
+
 data class MountainMapScreenParameters(
     val loading: Boolean,
     val mountains: MountainList,
@@ -500,250 +557,4 @@ private fun MountainMapScreenPreview(
         onMapLoaded = onMapLoaded,
         showScaleBar = parameters.showScaleBar,
     )
-}
-
-@Composable
-private fun ClusteredMarkersPreview_intro_markers(mountainList: MountainList, loading: Boolean) {
-    CompositionLocalProvider(
-        LocalUnitsConverter provides ImperialUnitsConverter
-    ) {
-        // Wait for the mountains to load before displaying the map
-        val markerType = MarkerType.Basic
-        val showAllMountains = false
-        val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(mountainList.boundingBox.center, 1f)
-        }
-
-        val scope = rememberCoroutineScope()
-
-        LaunchedEffect(mountainList) {
-            scope.launch {
-                cameraPositionState.animate(
-                    update = CameraUpdateFactory.newLatLngZoom(mountainList.boundingBox.center, 5f),
-                    durationMs = 1000
-                )
-            }
-        }
-
-        MountainMarkersTheme(dynamicColor = false) {
-            MountainMapScreen(
-                markerType = markerType,
-                loading = loading,
-                mountains = mountainList,
-                showAllMountains = showAllMountains,
-                onEvent = { },
-                cameraPositionState = cameraPositionState,
-                showMarkers = false,
-                showColorado = false,
-                showRanges = false
-            )
-        }
-    }
-}
-
-@Composable
-fun BasicMarkersPreview_null_island() {
-    CompositionLocalProvider(
-        LocalUnitsConverter provides ImperialUnitsConverter
-    ) {
-        val markerType = MarkerType.Basic
-        val loading = false
-        val mountains = MountainList(
-            mountains = emptyList(),
-            boundingBox = EmptyLatLngBounds
-        )
-        val showAllMountains = false
-        val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(mountains.boundingBox.center, 1f)
-        }
-
-        MountainMarkersTheme(dynamicColor = false) {
-            MountainMapScreen(
-                markerType = markerType,
-                loading = loading,
-                mountains = mountains,
-                showAllMountains = showAllMountains,
-                onEvent = { },
-                cameraPositionState = cameraPositionState,
-                showMarkers = false,
-                showColorado = false,
-                showRanges = false
-            )
-        }
-    }
-}
-
-@Composable
-fun BasicMarkersPreview_camera1(mountainList: MountainList, loading: Boolean) {
-    CompositionLocalProvider(
-        LocalUnitsConverter provides ImperialUnitsConverter
-    ) {
-        // Wait for the mountains to load before displaying the map
-        val markerType = MarkerType.Basic
-        val showAllMountains = false
-        val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(mountainList.boundingBox.center, 1f)
-        }
-
-        val scope = rememberCoroutineScope()
-
-        LaunchedEffect(mountainList) {
-            scope.launch {
-                cameraPositionState.animate(
-                    update = CameraUpdateFactory.newLatLngZoom(mountainList.boundingBox.center, 5f),
-                    durationMs = 1000
-                )
-            }
-        }
-
-        MountainMarkersTheme(dynamicColor = false) {
-            MountainMapScreen(
-                markerType = markerType,
-                loading = loading,
-                mountains = mountainList,
-                showAllMountains = showAllMountains,
-                onEvent = { },
-                cameraPositionState = cameraPositionState,
-                showMarkers = false,
-                showColorado = false,
-                showRanges = false
-            )
-        }
-    }
-}
-
-@Composable
-fun BasicMarkersPreview_camera2(mountainList: MountainList, loading: Boolean) {
-    CompositionLocalProvider(
-        LocalUnitsConverter provides ImperialUnitsConverter
-    ) {
-        // Wait for the mountains to load before displaying the map
-        val markerType = MarkerType.Basic
-        val showAllMountains = false
-        val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(mountainList.boundingBox.center, 1f)
-        }
-
-        val scope = rememberCoroutineScope()
-
-        LaunchedEffect(mountainList) {
-            zoomAll(scope, cameraPositionState, mountainList.boundingBox)
-        }
-
-        MountainMarkersTheme(dynamicColor = false) {
-            MountainMapScreen(
-                markerType = markerType,
-                loading = loading,
-                mountains = mountainList,
-                showAllMountains = showAllMountains,
-                onEvent = { },
-                cameraPositionState = cameraPositionState,
-                showMarkers = false,
-                showColorado = false,
-                showRanges = false
-            )
-        }
-    }
-}
-
-@Composable
-fun BasicMarkersPreview_basic_markers(mountainList: MountainList, loading: Boolean) {
-    CompositionLocalProvider(
-        LocalUnitsConverter provides ImperialUnitsConverter
-    ) {
-        // Wait for the mountains to load before displaying the map
-        val markerType = MarkerType.Basic
-        val showAllMountains = false
-        val cameraPositionState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(mountainList.boundingBox.center, 1f)
-        }
-
-        val scope = rememberCoroutineScope()
-
-        LaunchedEffect(mountainList) {
-            zoomAll(scope, cameraPositionState, mountainList.boundingBox)
-        }
-
-        MountainMarkersTheme(dynamicColor = false) {
-            MountainMapScreen(
-                markerType = markerType,
-                loading = loading,
-                mountains = mountainList,
-                showAllMountains = showAllMountains,
-                onEvent = { },
-                cameraPositionState = cameraPositionState,
-                showMarkers = true,
-                styleMarkers = false,
-                showColorado = false,
-                showRanges = false
-            )
-        }
-    }
-}
-
-
-@Composable
-fun CaptureScreenshot(filename: String = "screenshot") {
-    val context = LocalView.current.context
-    val view = LocalView.current
-    val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val location = IntArray(2)
-        view.getLocationInWindow(location)
-        val activity = LocalView.current.context as? Activity
-        val window = activity?.window
-
-        if (window != null) {
-            LaunchedEffect(Unit) {
-                val handler = Handler(Looper.getMainLooper())
-                try {
-                    PixelCopy.request(
-                        window,
-                        android.graphics.Rect(
-                            location[0],
-                            location[1],
-                            location[0] + view.width,
-                            location[1] + view.height
-                        ),
-                        bitmap,
-                        { copyResult: Int ->
-                            if (copyResult == PixelCopy.SUCCESS) {
-                                saveBitmap(context, bitmap, filename)
-                            } else {
-                                Log.e("Screenshot", "PixelCopy failed: $copyResult")
-                            }
-                        },
-                        handler
-                    )
-                } catch (e: IllegalArgumentException) {
-                    Log.e("Screenshot", "PixelCopy IllegalArgumentException: ${e.message}")
-                }
-            }
-        }
-    } else {
-        // Older versions are not supported with this method.
-        Log.w("Screenshot", "PixelCopy is only available on API 26 and above.")
-    }
-}
-
-private fun saveBitmap(context: Context, bitmap: Bitmap, filename: String) {
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    val fileName = "${filename}_$timeStamp.png"
-
-    val imagesFolder = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Screenshots")
-    imagesFolder.mkdirs()
-    val imageFile = File(imagesFolder, fileName)
-
-    try {
-        val fos = FileOutputStream(imageFile)
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-        fos.flush()
-        fos.close()
-        Log.d("Screenshot", "Screenshot saved to: ${imageFile.absolutePath}")
-        // Optionally, you can use MediaStore to make the image appear in the Gallery
-        // ... (See example below)
-    } catch (e: Exception) {
-        Log.e("Screenshot", "Error saving screenshot: ${e.message}")
-    }
 }
