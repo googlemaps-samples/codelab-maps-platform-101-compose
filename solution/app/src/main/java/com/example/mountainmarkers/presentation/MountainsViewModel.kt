@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 
@@ -68,8 +67,6 @@ constructor(
   )
 
   val mountains = allMountains.combine(showAllMountains) { mountains, showAll ->
-    Log.w("MountainsViewModel", "Mountains changed: ${mountains.size} ${mountains.firstOrNull()}")
-
     val filteredMountains = if (showAll) mountains else mountains.filter { it.is14er() }
     val boundingBox = filteredMountains.map { it.location }.toLatLngBounds()
     MountainList(
@@ -84,25 +81,6 @@ constructor(
       boundingBox = EmptyLatLngBounds,
     )
   )
-
-//    mountainsRepository.mountains.combine(showAllMountains) { allMountains, showAllMountains ->
-//      if (allMountains.isEmpty()) {
-//        MountainsScreenViewState.Loading
-//      } else {
-//        val filteredMountains =
-//          if (showAllMountains) allMountains else allMountains.filter { it.is14er() }
-//        val boundingBox = filteredMountains.map { it.location }.toLatLngBounds()
-//        MountainsScreenViewState.MountainList(
-//          mountains = filteredMountains,
-//          boundingBox = boundingBox,
-//          showingAllPeaks = showAllMountains,
-//        )
-//      }
-//    }.stateIn(
-//      scope = viewModelScope,
-//      started = SharingStarted.WhileSubscribed(5000),
-//      initialValue = MountainsScreenViewState.Loading
-//    )
 
   // Handle user events
   fun onEvent(event: MountainsViewModelEvent) {

@@ -22,6 +22,7 @@ import androidx.activity.viewModels
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.view.WindowCompat
@@ -30,8 +31,10 @@ import com.example.mountainmarkers.data.utils.ImperialUnitsConverter
 import com.example.mountainmarkers.data.utils.LocalUnitsConverter
 import com.example.mountainmarkers.data.utils.MetricUnitsConverter
 import com.example.mountainmarkers.presentation.MountainMapScreen
+import com.example.mountainmarkers.presentation.MountainsScreenEvent
 import com.example.mountainmarkers.presentation.MountainsViewModel
 import com.example.mountainmarkers.presentation.MountainsViewModelEvent
+import com.example.mountainmarkers.presentation.zoomAll
 import com.example.mountainmarkers.ui.theme.MountainMarkersTheme
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -54,6 +57,8 @@ class MainActivity : ComponentActivity() {
             val loading by viewModel.loading.collectAsStateWithLifecycle()
             val mountains by viewModel.mountains.collectAsStateWithLifecycle()
             val showAllMountains by viewModel.showAllMountains.collectAsStateWithLifecycle()
+            val scope = rememberCoroutineScope()
+            val eventFlow = viewModel.getEventChannel()
 
             val unitsConverter = if (LocalConfiguration.current.locales.get(0).country == "US") {
                 ImperialUnitsConverter
@@ -76,6 +81,24 @@ class MainActivity : ComponentActivity() {
                     }
             }
 
+            LaunchedEffect(mountains.boundingBox) {
+                zoomAll(
+                    scope = scope,
+                    cameraPositionState,
+                    mountains.boundingBox
+                )
+            }
+
+            LaunchedEffect(eventFlow) {
+                eventFlow.collect { event ->
+                    when (event) {
+                        MountainsScreenEvent.OnZoomAll -> {
+                            zoomAll(scope, cameraPositionState, mountains.boundingBox)
+                        }
+                    }
+                }
+            }
+
             CompositionLocalProvider(
                 LocalUnitsConverter provides unitsConverter
             ) {
@@ -89,7 +112,6 @@ class MainActivity : ComponentActivity() {
                         showAllMountains = showAllMountains,
                         onEvent = { viewModel.onEvent(it) },
                         cameraPositionState = cameraPositionState,
-                        showMarkers = false
                     )
                 }
             }

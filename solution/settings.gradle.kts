@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Mountain Markers"
 include(":app")
- 
