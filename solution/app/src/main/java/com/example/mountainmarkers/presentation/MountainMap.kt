@@ -1,4 +1,4 @@
-package com.example.mountainmarkers
+package com.example.mountainmarkers.presentation
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,17 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.mountainmarkers.MarkerType
+import com.example.mountainmarkers.R
 import com.example.mountainmarkers.data.utils.DMS
 import com.example.mountainmarkers.data.utils.Direction.WEST
 import com.example.mountainmarkers.data.utils.toDecimalDegrees
-import com.example.mountainmarkers.presentation.AdvancedMarkersMapContent
-import com.example.mountainmarkers.presentation.BasicMarkersMapContent
-import com.example.mountainmarkers.presentation.ClusteringMarkersMapContent
-import com.example.mountainmarkers.presentation.MountainsScreenEvent
-import com.example.mountainmarkers.presentation.MountainsScreenViewState
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMapOptions
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -45,32 +40,33 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.Polygon
-import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.widgets.ScaleBar
 import com.google.maps.android.data.kml.KmlLayer
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.launch
 
 /**
  * Shows a [GoogleMap] with collection of markers
  */
-@OptIn(MapsComposeExperimentalApi::class)
+@OptIn(MapsComposeExperimentalApi::class, FlowPreview::class)
 @Composable
 fun MountainMap(
     paddingValues: PaddingValues,
-    viewState: MountainsScreenViewState.MountainList,
-    eventFlow: Flow<MountainsScreenEvent>,
+    mountains: MountainList,
     selectedMarkerType: MarkerType,
+    cameraPositionState: CameraPositionState,
+    showMarkers: Boolean = true,
+    showColorado: Boolean = true,
+    showRanges: Boolean = true,
+    styleMarkers: Boolean = true,
+    onMapLoaded: () -> Unit = {},
+    showScaleBar: Boolean = true,
 ) {
-    var isMapLoaded by remember { mutableStateOf(false) }
+    var isMapLoaded by remember { mutableStateOf(true) }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val mapId = stringResource(id = R.string.map_id)
-
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(viewState.boundingBox.center, 5f)
-    }
 
     val mapProperties by remember {
         mutableStateOf(
@@ -79,20 +75,6 @@ fun MountainMap(
                 mapStyleOptions = MapStyleOptions.loadRawResourceStyle(context, R.raw.style_json)
             )
         )
-    }
-
-    LaunchedEffect(true) {
-        eventFlow.collect { event ->
-            when (event) {
-                MountainsScreenEvent.OnZoomAll -> {
-                    zoomAll(scope, cameraPositionState, viewState.boundingBox)
-                }
-            }
-        }
-    }
-
-    LaunchedEffect(key1 = viewState.boundingBox) {
-        zoomAll(scope, cameraPositionState, viewState.boundingBox)
     }
 
     Box(
@@ -104,57 +86,69 @@ fun MountainMap(
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState,
             properties = mapProperties,
-            onMapLoaded = { isMapLoaded = true },
+            onMapLoaded = {
+                onMapLoaded()
+                isMapLoaded = true
+            },
             googleMapOptionsFactory = {
                 GoogleMapOptions().mapId(mapId)
             }
         ) {
-            ColoradoPolygon()
+            if (showColorado) ColoradoPolygon()
 
-            when (selectedMarkerType) {
-                MarkerType.Basic -> {
-                    BasicMarkersMapContent(
-                        mountains = viewState.mountains,
-                    )
-                }
+            if (showMarkers) {
+                when (selectedMarkerType) {
+                    MarkerType.Basic -> {
+                        BasicMarkersMapContent(
+                            mountains = mountains.mountains,
+                            styleMarkers = styleMarkers,
+                        )
+                    }
 
-                MarkerType.Advanced -> {
-                    AdvancedMarkersMapContent(
-                        mountains = viewState.mountains,
-                    )
-                }
+                    MarkerType.Advanced -> {
+                        AdvancedMarkersMapContent(
+                            mountains = mountains.mountains,
+                            styleMarkers = styleMarkers,
+                        )
+                    }
 
-                MarkerType.Clustered -> {
-                    ClusteringMarkersMapContent(
-                        mountains = viewState.mountains,
-                        onClusterClick = { cluster ->
-                            val newZoom = cameraPositionState.position.zoom + 1
-                            scope.launch {
-                                cameraPositionState.animate(
-                                    update = CameraUpdateFactory.newLatLngZoom(
-                                        cluster.position, newZoom
-                                    ),
-                                    durationMs = 500,
-                                )
-                            }
-                            false
-                        },
-                    )
+                    MarkerType.Clustered -> {
+                        ClusteringMarkersMapContent(
+                            mountains = mountains.mountains,
+                            styleMarkers = styleMarkers,
+                            onClusterClick = { cluster ->
+                                val newZoom = cameraPositionState.position.zoom + 1
+                                scope.launch {
+                                    cameraPositionState.animate(
+                                        update = CameraUpdateFactory.newLatLngZoom(
+                                            cluster.position, newZoom
+                                        ),
+                                        durationMs = 500,
+                                    )
+                                }
+                                false
+                            },
+                        )
+                    }
                 }
             }
 
-            MapEffect(key1 = true) {map ->
-                val layer = KmlLayer(map, R.raw.mountain_ranges, context)
-                layer.addLayerToMap()
+            MapEffect(showRanges) {map ->
+                if (showRanges) {
+                    val layer = KmlLayer(map, R.raw.mountain_ranges, context)
+                    layer.addLayerToMap()
+                }
             }
         }
 
-        ScaleBar(
-            modifier = Modifier
-                .padding(top = 5.dp, end = 15.dp)
-                .align(Alignment.TopEnd),
-            cameraPositionState = cameraPositionState
-        )
+        if (showScaleBar) {
+            ScaleBar(
+                modifier = Modifier
+                    .padding(top = 5.dp, end = 15.dp)
+                    .align(Alignment.TopEnd),
+                cameraPositionState = cameraPositionState
+            )
+        }
 
         if (!isMapLoaded) {
             AnimatedVisibility(

@@ -14,6 +14,8 @@
 
 package com.example.mountainmarkers.domain.mappers
 
+import android.util.Log
+import com.example.mountainmarkers.presentation.EmptyLatLngBounds
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 
@@ -22,11 +24,15 @@ import com.google.android.gms.maps.model.LatLngBounds
  * contain at least one LatLng.
  */
 fun Collection<LatLng>.toLatLngBounds() : LatLngBounds {
-  if (isEmpty()) error("Cannot create a LatLngBounds from an empty list")
-
-  return LatLngBounds.builder().apply {
-      for (latLng in this@toLatLngBounds) {
-        include(latLng)
-      }
-    }.build()
+    return if (isEmpty()) {
+        Log.w("toLatLngBounds", "Collection is empty. Returning empty LatLngBounds.")
+        EmptyLatLngBounds
+    }
+    else {
+        LatLngBounds.builder().apply {
+            for (latLng in this@toLatLngBounds) {
+                include(latLng)
+            }
+        }.build()
+    }
 }

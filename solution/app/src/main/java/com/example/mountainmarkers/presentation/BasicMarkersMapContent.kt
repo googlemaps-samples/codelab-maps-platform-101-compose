@@ -25,7 +25,6 @@ import com.example.mountainmarkers.data.local.is14er
 import com.example.mountainmarkers.presentation.utils.BitmapParameters
 import com.example.mountainmarkers.data.utils.toElevationString
 import com.example.mountainmarkers.presentation.utils.vectorToBitmap
-import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.GoogleMapComposable
 import com.google.maps.android.compose.Marker
@@ -38,7 +37,8 @@ import com.google.maps.android.compose.rememberMarkerState
 @GoogleMapComposable
 fun BasicMarkersMapContent(
     mountains: List<Mountain>,
-    onMountainClick: (Marker) -> Boolean = { false }
+    onMountainClick: (Marker) -> Boolean = { false },
+    styleMarkers: Boolean
 ) {
     // Create mountainIcon and fourteenerIcon
     val mountainIcon = vectorToBitmap(
@@ -67,7 +67,7 @@ fun BasicMarkersMapContent(
             snippet = mountain.elevation.toElevationString(),
             tag = mountain,
             anchor = Offset(0.5f, 0.5f),
-            icon = icon,
+            icon = if (styleMarkers) icon else null,
             onClick = { marker ->
                 onMountainClick(marker)
                 false

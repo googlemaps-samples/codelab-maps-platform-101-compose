@@ -63,7 +63,7 @@ enum class MarkerType(
         title = R.string.clustered_markers_label,
         selectedIcon = Icons.Filled.Place,
         unselectedIcon = Icons.Outlined.Place,
-    )
+    ),
 }
 
 /**

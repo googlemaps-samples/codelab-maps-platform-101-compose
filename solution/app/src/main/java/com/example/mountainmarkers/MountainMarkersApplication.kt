@@ -16,9 +16,14 @@ package com.example.mountainmarkers
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 
 /**
  * Application needed for hilt injection
  */
 @HiltAndroidApp
-class MountainMarkersApplication : Application()
+class MountainMarkersApplication : Application() {
+    @OptIn(DelicateCoroutinesApi::class)
+    val applicationScope = GlobalScope
+}
