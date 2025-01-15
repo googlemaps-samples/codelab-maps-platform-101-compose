@@ -34,13 +34,14 @@ import com.example.mountainmarkers.presentation.MountainMapScreen
 import com.example.mountainmarkers.presentation.MountainsScreenEvent
 import com.example.mountainmarkers.presentation.MountainsViewModel
 import com.example.mountainmarkers.presentation.MountainsViewModelEvent
+import com.example.mountainmarkers.presentation.snapToNorth
 import com.example.mountainmarkers.presentation.zoomAll
 import com.example.mountainmarkers.ui.theme.MountainMarkersTheme
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.maps.android.compose.rememberCameraPositionState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -59,6 +60,7 @@ class MainActivity : ComponentActivity() {
             val showAllMountains by viewModel.showAllMountains.collectAsStateWithLifecycle()
             val scope = rememberCoroutineScope()
             val eventFlow = viewModel.getEventChannel()
+            val mapBearing by viewModel.mapBearing.collectAsStateWithLifecycle()
 
             val unitsConverter = if (LocalConfiguration.current.locales.get(0).country == "US") {
                 ImperialUnitsConverter
@@ -72,13 +74,16 @@ class MainActivity : ComponentActivity() {
 
             // Optionally, send changes to the camera position to the ViewModel
             LaunchedEffect(cameraPositionState) {
-                snapshotFlow { cameraPositionState.position }
-                    .debounce(300)
-                    .collect {
-                        cameraPositionState.projection?.let {
-                            viewModel.onEvent(MountainsViewModelEvent.OnCameraChange(it))
+                scope.launch {
+                    snapshotFlow { cameraPositionState.position }
+//                        .debounce(300)
+                        .collect {
+                            viewModel.onEvent(MountainsViewModelEvent.OnCameraBearingChange(it.bearing))
+                            cameraPositionState.projection?.let {
+                                viewModel.onEvent(MountainsViewModelEvent.OnCameraChange(it))
+                            }
                         }
-                    }
+                }
             }
 
             LaunchedEffect(mountains.boundingBox) {
@@ -94,6 +99,10 @@ class MainActivity : ComponentActivity() {
                     when (event) {
                         MountainsScreenEvent.OnZoomAll -> {
                             zoomAll(scope, cameraPositionState, mountains.boundingBox)
+                        }
+
+                        MountainsScreenEvent.OnSnapToNorth -> {
+                            snapToNorth(scope, cameraPositionState)
                         }
                     }
                 }
@@ -112,6 +121,7 @@ class MainActivity : ComponentActivity() {
                         showAllMountains = showAllMountains,
                         onEvent = { viewModel.onEvent(it) },
                         cameraPositionState = cameraPositionState,
+                        mapBearing = mapBearing,
                     )
                 }
             }

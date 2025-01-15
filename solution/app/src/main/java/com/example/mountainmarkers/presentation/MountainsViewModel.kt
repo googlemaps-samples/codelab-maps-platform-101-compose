@@ -58,6 +58,9 @@ constructor(
   private val _showAllMountains = MutableStateFlow(false)
   val showAllMountains = _showAllMountains.asStateFlow()
 
+  private val _mapBearing = MutableStateFlow(0f)
+  val mapBearing = _mapBearing.asStateFlow()
+
   private val allMountains = mountainsRepository.mountains.onStart {
     mountainsRepository.loadMountains()
   }.stateIn(
@@ -94,6 +97,14 @@ constructor(
 
       is MountainsViewModelEvent.OnMarkerTypeChange -> {
         _markerType.value = event.markerType
+      }
+
+      is MountainsViewModelEvent.OnCameraBearingChange -> {
+        _mapBearing.value = event.cameraBearing
+      }
+
+      MountainsViewModelEvent.OnCompassClick -> {
+        sendScreenEvent(MountainsScreenEvent.OnSnapToNorth)
       }
     }
   }

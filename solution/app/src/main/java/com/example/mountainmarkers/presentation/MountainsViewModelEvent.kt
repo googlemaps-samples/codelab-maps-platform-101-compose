@@ -27,4 +27,7 @@ sealed class MountainsViewModelEvent {
 
     data object OnZoomAll: MountainsViewModelEvent()
     data object OnToggleAllPeaks: MountainsViewModelEvent()
+
+    data class OnCameraBearingChange(val cameraBearing: Float) : MountainsViewModelEvent()
+    data object OnCompassClick : MountainsViewModelEvent()
 }

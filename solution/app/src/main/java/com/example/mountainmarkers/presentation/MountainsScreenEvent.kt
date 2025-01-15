@@ -20,4 +20,5 @@ package com.example.mountainmarkers.presentation
  */
 sealed class MountainsScreenEvent {
     data object OnZoomAll: MountainsScreenEvent()
+    data object OnSnapToNorth : MountainsScreenEvent()
 }

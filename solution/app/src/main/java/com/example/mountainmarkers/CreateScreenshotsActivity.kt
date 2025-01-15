@@ -547,13 +547,13 @@ private fun MountainMapScreenPreview(
         loading = parameters.loading,
         mountains = parameters.mountains,
         showAllMountains = parameters.showAllMountains,
+        onEvent = { },
         cameraPositionState = parameters.cameraPositionState,
         showMarkers = parameters.showMarkers,
         showColorado = parameters.showColorado,
         showRanges = parameters.showRanges,
         styleMarkers = parameters.styleMarkers,
-        onEvent = { },
-        onMapLoaded = onMapLoaded,
         showScaleBar = parameters.showScaleBar,
+        onMapLoaded = onMapLoaded,
     )
 }

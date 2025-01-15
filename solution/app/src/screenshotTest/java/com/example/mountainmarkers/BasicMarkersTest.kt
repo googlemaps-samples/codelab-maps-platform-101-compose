@@ -38,7 +38,8 @@ class BasicMarkersTest {
                     showAllMountains = showAllMountains,
                     onEvent = { },
                     cameraPositionState = cameraPositionState,
-                    showMarkers = false
+                    showMarkers = false,
+                    mapBearing = mapBearing
                 )
             }
         }

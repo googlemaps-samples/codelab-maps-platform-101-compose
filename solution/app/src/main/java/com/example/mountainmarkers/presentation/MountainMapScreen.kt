@@ -24,6 +24,7 @@ fun MountainMapScreen(
     showRanges: Boolean = true,
     styleMarkers: Boolean = true,
     showScaleBar: Boolean = true,
+    mapBearing: Float = 0f,
     onMapLoaded: () -> Unit = {},
 ) {
     Scaffold(
@@ -56,7 +57,9 @@ fun MountainMapScreen(
                 showRanges = showRanges,
                 styleMarkers = styleMarkers,
                 onMapLoaded = onMapLoaded,
-                showScaleBar = showScaleBar
+                showScaleBar = showScaleBar,
+                mapBearing = mapBearing,
+                onCompassClicked = { onEvent(MountainsViewModelEvent.OnCompassClick) },
             )
         }
     }

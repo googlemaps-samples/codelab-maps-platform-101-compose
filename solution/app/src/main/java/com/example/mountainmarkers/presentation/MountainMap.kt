@@ -8,8 +8,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,8 +23,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.example.mountainmarkers.MarkerType
 import com.example.mountainmarkers.R
@@ -29,6 +37,7 @@ import com.example.mountainmarkers.data.utils.Direction.WEST
 import com.example.mountainmarkers.data.utils.toDecimalDegrees
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -62,6 +71,8 @@ fun MountainMap(
     styleMarkers: Boolean = true,
     onMapLoaded: () -> Unit = {},
     showScaleBar: Boolean = true,
+    mapBearing: Float = 0f,
+    onCompassClicked: () -> Unit = {},
 ) {
     var isMapLoaded by remember { mutableStateOf(true) }
     val context = LocalContext.current
@@ -150,6 +161,12 @@ fun MountainMap(
             )
         }
 
+        CompassButton(
+            modifier = Modifier.align(Alignment.TopEnd).padding(top = 64.dp, end = 8.dp).size(64.dp),
+            compassDirection = mapBearing,
+            onCompassClicked = onCompassClicked,
+        )
+
         if (!isMapLoaded) {
             AnimatedVisibility(
                 modifier = Modifier.matchParentSize(),
@@ -164,6 +181,35 @@ fun MountainMap(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun CompassButton(
+    compassDirection: Float,
+    modifier: Modifier = Modifier,
+    onCompassClicked: () -> Unit = {},
+) {
+    // This might look better, but you have to fix the rotation direction weirdness...
+//    val animatedCompassDirection by animateFloatAsState(
+//        targetValue = compassDirection,
+//        animationSpec = tween(durationMillis = 200)
+//    )
+
+    Button(
+        onClick = onCompassClicked,
+        modifier = modifier
+            .graphicsLayer {
+                rotationZ = -compassDirection
+            },
+        shape = CircleShape,
+    ) {
+        Icon(
+            modifier = Modifier.fillMaxSize(),
+            imageVector = ImageVector.vectorResource(id = R.drawable.baseline_arrow_upward_24),
+            contentDescription = "Compass",
+            tint = Color.Yellow,
+        )
     }
 }
 
@@ -199,6 +245,16 @@ fun zoomAll(
     scope.launch {
         cameraPositionState.animate(
             update = CameraUpdateFactory.newLatLngBounds(boundingBox, 64),
+            durationMs = 1000
+        )
+    }
+}
+
+fun snapToNorth(scope: CoroutineScope, cameraPositionState: CameraPositionState) {
+    scope.launch {
+        val newCameraPosition = CameraPosition.builder(cameraPositionState.position).bearing(0f).build()
+        cameraPositionState.animate(
+            update = CameraUpdateFactory.newCameraPosition(newCameraPosition),
             durationMs = 1000
         )
     }
