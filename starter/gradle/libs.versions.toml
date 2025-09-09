@@ -1,0 +1,92 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# A Gradle version catalog. For more information, see
+# https://docs.gradle.org/current/userguide/platforms.html
+
+[versions]
+# Build-related plugins
+android-application = "8.13.0"
+kotlin-android = "2.2.10"
+hilt-android = "2.57.1"
+secrets-gradle-plugin = "2.0.1"
+
+# AndroidX
+core-ktx = "1.17.0"
+lifecycle-runtime-ktx = "2.9.3"
+activity-compose = "1.10.1"
+
+# Compose
+compose-bom = "2025.08.01"
+
+# Testing
+junit = "4.13.2"
+robolectric = "4.16"
+test-core = "1.7.0"
+truth = "1.4.4"
+test-ext-junit = "1.3.0"
+espresso-core = "3.7.0"
+
+# Google Maps
+maps-compose = "6.10.0"
+play-services-maps = "19.2.0"
+maps-ktx = "5.2.0"
+maps-utils-ktx = "5.2.0"
+
+[libraries]
+# AndroidX. These libraries provide core Android functionality, lifecycle management, and Compose integration.
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle-runtime-ktx" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
+
+# Jetpack Compose. These libraries provide the UI toolkit for building native Android UI.
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui" }
+androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
+
+# Hilt. These libraries are used for dependency injection.
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
+
+# Kotlin. This library is used for reflection.
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+
+# Testing. These libraries are used for running unit and instrumentation tests.
+junit = { module = "junit:junit", version.ref = "junit" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+androidx-test-core = { module = "androidx.test:core", version.ref = "test-core" }
+google-truth = { module = "com.google.truth:truth", version.ref = "truth" }
+androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "test-ext-junit" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+# Google Maps. These libraries are used to display Google Maps and interact with the Maps SDK.
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "maps-compose" }
+maps-compose-utils = { module = "com.google.maps.android:maps-compose-utils", version.ref = "maps-compose" }
+maps-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "maps-compose" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-services-maps" }
+maps-ktx = { module = "com.google.maps.android:maps-ktx", version.ref = "maps-ktx" }
+maps-utils-ktx = { module = "com.google.maps.android:maps-utils-ktx", version.ref = "maps-utils-ktx" }
+
+[plugins]
+# Build-related plugins. These plugins are used to build the application.
+android-application = { id = "com.android.application", version.ref = "android-application" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
+hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
+secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets-gradle-plugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-android" }

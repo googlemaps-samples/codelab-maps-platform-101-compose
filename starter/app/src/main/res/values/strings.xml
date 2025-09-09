@@ -29,4 +29,6 @@
 
   <string name="zoom_all">Zoom all</string>
   <string name="show_all">Show all</string>
+
+  <!-- TODO: Add a map ID string -->
 </resources>
