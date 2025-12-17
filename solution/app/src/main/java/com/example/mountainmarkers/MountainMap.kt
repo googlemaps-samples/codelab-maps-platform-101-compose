@@ -85,14 +85,18 @@ fun MountainMap(
         eventFlow.collect { event ->
             when (event) {
                 MountainsScreenEvent.OnZoomAll -> {
-                    zoomAll(scope, cameraPositionState, viewState.boundingBox)
+                    if (isMapLoaded) {
+                        zoomAll(scope, cameraPositionState, viewState.boundingBox)
+                    }
                 }
             }
         }
     }
 
-    LaunchedEffect(key1 = viewState.boundingBox) {
-        zoomAll(scope, cameraPositionState, viewState.boundingBox)
+    LaunchedEffect(key1 = isMapLoaded, key2 = viewState.boundingBox) {
+        if (isMapLoaded) {
+            zoomAll(scope, cameraPositionState, viewState.boundingBox)
+        }
     }
 
     Box(

@@ -44,7 +44,7 @@ class MountainsRepository(@ApplicationContext val context: Context) {
     if (!loaded) {
       loaded = true
       _mountains.value = withContext(Dispatchers.IO) {
-        context.resources.openRawResource(R.raw.top_peaks).use { inputStream ->
+        context.resources.openRawResource(R.raw.top_peaks_gpx).use { inputStream ->
           readMountains(inputStream)
         }
       }
