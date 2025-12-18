@@ -37,9 +37,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         compose = true
         buildConfig = true
@@ -72,6 +69,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
@@ -79,7 +77,7 @@ dependencies {
     testImplementation(libs.google.truth)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.test.espresso)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
@@ -107,4 +105,11 @@ secrets {
     // A properties file containing default secret values. This file can be
     // checked in version control.
     defaultPropertiesFileName = "local.defaults.properties"
+}
+
+// Accessing the kotlin extension to configure compiler options
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+    }
 }
