@@ -9,6 +9,3 @@ captures
 local.properties
 secrets.properties
 .idea/
-app/src/main/res/raw/*.py
-
-app/src/main/res/raw/top_peaks_kml.kml
