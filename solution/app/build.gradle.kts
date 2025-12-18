@@ -54,6 +54,13 @@ android {
     }
 }
 
+// Accessing the kotlin extension to configure compiler options
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+    }
+}
+
 // Allow references to generated code
 kapt {
     correctErrorTypes = true
@@ -105,11 +112,4 @@ secrets {
     // A properties file containing default secret values. This file can be
     // checked in version control.
     defaultPropertiesFileName = "local.defaults.properties"
-}
-
-// Accessing the kotlin extension to configure compiler options
-kotlin {
-    compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
-    }
 }

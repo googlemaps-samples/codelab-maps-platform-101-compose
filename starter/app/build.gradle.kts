@@ -37,9 +37,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         compose = true
         buildConfig = true
@@ -62,6 +59,13 @@ kapt {
     correctErrorTypes = true
 }
 
+// Accessing the kotlin extension to configure compiler options
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+    }
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -72,6 +76,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
@@ -93,7 +98,7 @@ dependencies {
 
     // Google Maps SDK -- these are here for the data model.  Remove these dependencies and replace
     // with the compose versions.
-    // TODO: Replace with the Google Maps Compose libraries.
+    // TODO: Replace with the Google Maps Compose library dependencies.
     implementation(libs.play.services.maps)
     // KTX for the Maps SDK for Android library
     implementation(libs.maps.ktx)

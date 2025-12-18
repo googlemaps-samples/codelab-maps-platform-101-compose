@@ -84,5 +84,5 @@ maps-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets"
 android-application = { id = "com.android.application", version.ref = "android-application" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
-secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets-gradle-plugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-android" }
+secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets-gradle-plugin" }
