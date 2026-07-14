@@ -35,6 +35,7 @@ import com.example.mountainmarkers.data.local.Mountain
 import com.example.mountainmarkers.data.local.is14er
 import com.example.mountainmarkers.data.utils.LocalUnitsConverter
 import com.example.mountainmarkers.presentation.MountainsScreenViewState.MountainList
+import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterItem
 import com.google.maps.android.compose.GoogleMapComposable
@@ -47,10 +48,10 @@ data class MountainClusterItem(
     val mountain: Mountain,
     val snippetString: String
 ) : ClusterItem {
-    override fun getPosition() = mountain.location
-    override fun getTitle() = mountain.name
-    override fun getSnippet() = snippetString
-    override fun getZIndex() = 0f
+    override val position: LatLng get() = mountain.location
+    override val title: String get() = mountain.name
+    override val snippet: String get() = snippetString
+    override val zIndex: Float get() = 0f
 }
 
 /**
