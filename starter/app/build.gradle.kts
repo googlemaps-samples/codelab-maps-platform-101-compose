@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.example.mountainmarkers"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.mountainmarkers"
@@ -37,13 +37,16 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         compose = true
         buildConfig = true
     }
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+    }
+}
     
     packaging {
         resources {
@@ -89,6 +92,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    kapt("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0")
     implementation(libs.kotlin.reflect)
 
     // Google Maps SDK -- these are here for the data model.  Remove these dependencies and replace
