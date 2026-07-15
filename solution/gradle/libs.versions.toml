@@ -40,6 +40,8 @@ espresso-core = "3.7.0"
 
 # Google Maps
 maps-compose = "8.4.0"
+maps-ktx = "6.2.0"
+maps-utils-ktx = "6.2.0"
 
 [libraries]
 # AndroidX. These libraries provide core Android functionality, lifecycle management, and Compose integration.
