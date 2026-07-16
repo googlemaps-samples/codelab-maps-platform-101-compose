@@ -18,7 +18,7 @@
 [versions]
 # Build-related plugins
 android-application = "8.13.0"
-kotlin-android = "2.3.10"
+kotlin-android = "2.4.10"
 hilt-android = "2.57.1"
 secrets-gradle-plugin = "2.0.1"
 
