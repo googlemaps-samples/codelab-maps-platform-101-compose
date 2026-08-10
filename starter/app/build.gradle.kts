@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.example.mountainmarkers"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.mountainmarkers"
@@ -34,16 +34,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
+}
     
     packaging {
         resources {
@@ -89,17 +92,14 @@ dependencies {
     // Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    kapt("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0")
     implementation(libs.kotlin.reflect)
 
     // Google Maps SDK -- these are here for the data model.  Remove these dependencies and replace
     // with the compose versions.
     // TODO: Replace with the Google Maps Compose libraries.
     implementation(libs.play.services.maps)
-    // KTX for the Maps SDK for Android library
-    implementation(libs.maps.ktx)
-    // KTX for the Maps SDK for Android Utility Library
-    implementation(libs.maps.utils.ktx)
-
+    implementation(libs.android.maps.utils)
 }
 
 // TODO: configure the secrets property

@@ -21,7 +21,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.common.truth.Fact
 import com.google.common.truth.FailureMetadata
 import com.google.common.truth.Truth
-import com.google.maps.android.ktx.utils.sphericalDistance
+import com.google.maps.android.sphericalDistance
 import kotlin.math.abs
 
 class LatLngSubject(metadata: FailureMetadata, private val actual: LatLng?) :

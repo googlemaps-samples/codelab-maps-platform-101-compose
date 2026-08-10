@@ -18,7 +18,7 @@
 [versions]
 # Build-related plugins
 android-application = "8.13.0"
-kotlin-android = "2.2.10"
+kotlin-android = "2.3.10"
 hilt-android = "2.57.1"
 secrets-gradle-plugin = "2.0.1"
 
@@ -39,7 +39,8 @@ test-ext-junit = "1.3.0"
 espresso-core = "3.7.0"
 
 # Google Maps
-maps-compose = "6.10.0"
+maps-compose = "9.0.0-rc01"
+maps-utils = "6.0.0-rc01"
 
 [libraries]
 # AndroidX. These libraries provide core Android functionality, lifecycle management, and Compose integration.
@@ -76,6 +77,8 @@ androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-mani
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "maps-compose" }
 maps-compose-utils = { module = "com.google.maps.android:maps-compose-utils", version.ref = "maps-compose" }
 maps-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "maps-compose" }
+android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "maps-utils" }
+android-maps-utils-core = { module = "com.google.maps.android:android-maps-utils-core", version.ref = "maps-utils" }
 
 [plugins]
 # Build-related plugins. These plugins are used to build the application.
